@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,29 +10,33 @@
     <script src="https://kit.fontawesome.com/87f40ec0c8.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
-      <!-- Favicons -->
-    <link href="assets/img/favicon.png" rel="icon">
-    <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+      <!-- Favicons 배경사진 -->
+    <link rel="stylesheet" href="{% static 'accounts/images/rong.jpg' %}">
+    {% comment %} <link href="assets/img/favicon.png" rel="icon"> {% endcomment %}
+    {% comment %} <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon"> {% endcomment %}
 
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
 
     <!-- Vendor CSS Files -->
-    <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="assets/vendor/icofont/icofont.min.css" rel="stylesheet">
-    <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
-    <link href="assets/vendor/animate.css/animate.min.css" rel="stylesheet">
-    <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
-    <link href="assets/vendor/venobox/venobox.css" rel="stylesheet">
-    <link href="assets/vendor/owl.carousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="{% static 'accounts/stylesheet/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'accounts/stylesheet/vendor/icofont/icofont.min.css' %}" rel="stylesheet">
+    <link href="{% static 'accounts/stylesheet/vendor/boxicons/css/boxicons.min.css' %}" rel="stylesheet">
+    <link href="{% static 'accounts/stylesheet/vendor/animate.css/animate.min.css' %}" rel="stylesheet">
+    <link href="{% static 'accounts/stylesheet/vendor/remixicon/remixicon.css'%}" rel="stylesheet">
+    <link href="{% static 'accounts/stylesheet/vendor/venobox/venobox.css'%}" rel="stylesheet">
+    <link href="{% static 'accounts/stylesheet/vendor/owl.carousel/assets/owl.carousel.min.css'%}" rel="stylesheet">
 
     <!-- Template Main CSS File -->
-    <link href="assets/css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'accounts/stylesheets/css/style.css' %}">
+    {% comment %} <link href="assets/css/style.css" rel="stylesheet"> {% endcomment %}
+    {% block css %}
+    {% endblock css %}
 
 </head>
 <body>
   <!-- ======= Header ======= -->
-    <header id="header" class="fixed-top ">
+    <header id="header" class="sticky-top">
       <div class="container d-flex align-items-center">
 
         <h1 class="logo"><a href="home.html">SOOCHELL</a></h1>
@@ -44,30 +49,27 @@
             <li class="active"><a href="hime.html">Home</a></li>
             <li><a href="{% url 'movies:index' %}">Movies</a></li>
             <li><a href="{% url 'reviews:index' %}">Community</a></li>
+            <form action="{% url 'movies:movie_search' %}" class="form-inline my-2 my-lg-0">
+              <input id="searchbar" class="form-control mr-sm-2 bg-dark text-light" type="search" placeholder="Search" aria-label="Search" name="movie_name" value="{{ movie_name }}">
+              <button class="btn btn-outline-success my-2 my-sm-0 mr-2" type="submit">Search</button>
+            </form>
+            <li class="nav-item">
+              {% if user.is_authenticated %}
+              <li class="nav-item">
+                <a class="nav-link disabled text-info">{{ user.username }}님 안녕하세요</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'accounts:logout' %}">Log Out</a>
+              </li>
+              {% else %}
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'accounts:login' %}">Login</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'accounts:signup' %}">Sign up</a>
+              </li>
+              {% endif %}
           </ul>
-
-          <ul class="navbar-nav ml-auto">
-          <form action="{% url 'movies:movie_search' %}" class="form-inline my-2 my-lg-0">
-            <input id="searchbar" class="form-control mr-sm-2 bg-dark text-light" type="search" placeholder="Search" aria-label="Search" name="movie_name" value="{{ movie_name }}">
-            <button class="btn btn-outline-success my-2 my-sm-0 mr-2" type="submit">검색</button>
-          </form>
-          <li class="nav-item">
-            {% if user.is_authenticated %}
-            <li class="nav-item">
-              <a class="nav-link disabled text-info">{{ user.username }}님 안녕하세요</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'accounts:logout' %}">Log Out</a>
-            </li>
-            {% else %}
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'accounts:login' %}">Login</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'accounts:signup' %}">Sign up</a>
-            </li>
-            {% endif %}
-        </ul>
 
         </nav><!-- .nav-menu -->
       </div>
