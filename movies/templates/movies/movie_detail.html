@@ -1,0 +1,145 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+
+{% block content %}
+<!-- ======= Blog Section ======= -->
+    <section id="blog" class="blog">
+      <div>
+        <div class="row">
+
+          <div class="col-lg-8 entries">
+
+            <article class="entry entry-single">
+
+              <div class="entry-img">
+                <!-- 여기 예고편, 안되면 포스터  넣자 -->
+                <!-- <youtube 
+                :video-id="videoId"
+                @ready="ready" @playing="playing"
+                :player-vars="{ autoplay: 1 }"
+                ></youtube> -->
+                <img src="assets/img/blog-1.jpg" alt="" class="img-fluid">
+              </div>
+
+              <h2 class="entry-title">
+                <p>{{ movie.title }}</p>
+              </h2>
+
+              <div class="entry-meta">
+                <ul>
+                  <li class="d-flex align-items-center"><i class="icofont-user"></i><strong>{{movie.vote_average}} / {{movie.vote_count}}</strong></li>
+                  <li class="d-flex align-items-center">
+                  {% if user in movie.like.all %}
+                    <i class="fas fa-heart fa-lg like-btn" style="color:crimson; cursor:pointer;" data-id="{{ movie.pk }}"></i>
+                  {% else %}
+                    <i class="fas fa-heart fa-lg like-btn" style="color:gray; cursor:pointer;" data-id="{{ movie.pk }}"></i>
+                  {% endif %}
+                  <span id="like-count-{{ movie.pk }}">{{ movie.like.all|length }}명이 좋아합니다</span>
+                  </li>
+                </ul>
+              </div>
+              <div class="row"><strong>Genres</strong>
+                {% for genre in movie.genres.all %}
+                  <p> {{ genre.name }}, </p>
+                {% endfor %}
+              </div>
+
+              <div class="entry-content">
+                <blockquote>
+                  <i class="icofont-quote-left quote-left"></i>
+                  <p>
+                    {{movie.overview}}  
+                  </p>
+                  <i class="las la-quote-right quote-right"></i>
+                  <i class="icofont-quote-right quote-right"></i>
+                </blockquote>
+
+              </div>
+
+            </article><!-- End blog entry -->
+            <!-- 리뷰 링크 -->
+            <div class="blog-author clearfix">
+              <img src="assets/img/blog-author.jpg" class="rounded-circle float-left" alt="">
+              <h4>Jane Smith</h4>
+              <div class="social-links">
+                <a href="https://twitters.com/#"><i class="icofont-twitter"></i></a>
+                <a href="https://facebook.com/#"><i class="icofont-facebook"></i></a>
+                <a href="https://instagram.com/#"><i class="icofont-instagram"></i></a>
+              </div>
+              <p>
+                Itaque quidem optio quia voluptatibus dolorem dolor. Modi eum sed possimus accusantium. Quas repellat voluptatem officia numquam sint aspernatur voluptas. Esse et accusantium ut unde voluptas.
+              </p>
+            </div><!-- End blog author bio -->
+
+          </div><!-- End blog entries list -->
+
+          <div class="col-lg-4">
+
+            <div class="sidebar">
+              <!-- 영화 출연진들 보이기 -> 이거도 각 컴포넌트로 만들어서 돌려야되나? ㅎ-->
+              <h3 class="sidebar-title">출연진</h3>
+              <div class="sidebar-item recent-posts">
+                <div class="post-item clearfix">
+                  <img src="assets/img/business-6.jpg" alt="">
+                  <h4><a href="blog-single.html">Nihil blanditiis at in nihil autem</a></h4>
+                  <time datetime="2020-01-01">Jan 1, 2020</time>
+                </div>
+
+                <div class="post-item clearfix">
+                  <img src="assets/img/business-20.jpg" alt="">
+                  <h4><a href="blog-single.html">Quidem autem et impedit</a></h4>
+                  <time datetime="2020-01-01">Jan 1, 2020</time>
+                </div>
+
+                <div class="post-item clearfix">
+                  <img src="assets/img/business-26.jpg" alt="">
+                  <h4><a href="blog-single.html">Id quia et et ut maxime similique occaecati ut</a></h4>
+                  <time datetime="2020-01-01">Jan 1, 2020</time>
+                </div>
+
+                <div class="post-item clearfix">
+                  <img src="assets/img/business-30.jpg" alt="">
+                  <h4><a href="blog-single.html">Laborum corporis quo dara net para</a></h4>
+                  <time datetime="2020-01-01">Jan 1, 2020</time>
+                </div>
+
+                <div class="post-item clearfix">
+                  <img src="assets/img/business-16.jpg" alt="">
+                  <h4><a href="blog-single.html">Et dolores corrupti quae illo quod dolor</a></h4>
+                  <time datetime="2020-01-01">Jan 1, 2020</time>
+                </div>
+
+              </div><!-- End sidebar recent posts-->
+            </div><!-- End sidebar -->
+          </div><!-- End blog sidebar -->
+        </div>
+      </div>
+    </section><!-- End Blog Section -->
+ 
+
+{% endblock%}
+
+{% block script %}
+    const likeBtns = document.querySelectorAll('i.like-btn')
+    likeBtns.forEach(likeBtns => {
+      likeBtns.addEventListener('click', event => {
+        //console.log('like button clicked!')
+        console.log(event.target.dataset)
+        const movie_pk = event.target.dataset.id
+        axios.get(`/movies/${movie_pk}/like`)
+          .then(response => {
+            console.log(response.data)
+            console.log(response.data.created_at)
+            const { liked, count } = response.data
+            if(liked) {
+              event.target.style.color = 'crimson'
+            }
+            else {
+              event.target.style.color = 'gray'
+            }
+            const likeCount = document.querySelector(`#like-count-${movie_pk}`).innerText = count + '명이 좋아합니다'
+          })
+      })
+    })
+{% endblock script %}
+

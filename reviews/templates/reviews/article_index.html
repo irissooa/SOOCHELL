@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="container d-flex justify-content-between">
+    <h2 class='mb-4 text-center display-4'>Community</h2>
+    <table class="table">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">index</th>
+          <th scope="col">category</th>
+          <th scope="col">title</th>
+          <th scope="col">username</th>
+          <th scope="col">date</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for review in page_obj %}
+        <tr class="text-light">
+          <th scope="row">{{ review.pk }}</th>
+          <th>{{ review.category }}</th>
+          <th><a class="text-light" href="{% url 'reviews:detail_review' review.pk %}"><strong>{{ review.title }}</strong></a></th>
+          <th>{{ review.user }}</th>
+          <th>{{ review.created_at }}</th>
+        </tr>
+        {% endfor %}  
+        </tr>
+      </tbody>
+    </table>
+    <div class="ml-3">
+      <a href="{% url 'reviews:create_review' %}"><button class="btn btn-primary"><strong>글 작성</strong></button></a>
+    </div>
+    <div class="text-center mt-2 mb-2" style="font-size:20px">
+    {% if page_obj.has_previous %}
+      <a href="?page={{ page_obj.previous_page_number }}" class="btn btn-primary btn-sm mr-1">이전으로</a>
+    {% endif %}
+      <span>{{ page_obj.number }}</span>
+      <span>/</span>
+      <span>{{ page_obj.paginator.num_pages }}</span>
+    {% if page_obj.has_next %}
+      <a href="?page={{ page_obj.next_page_number }}" class="btn btn-primary btn-sm ml-1">다음으로</a>
+    {% endif %}
+    </div>
+  </div>
+{% endblock %}
+
+  

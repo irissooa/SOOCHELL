@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+
+{% block content %}
+{% if request.resolver_match.url_name == 'update_review' %}
+  <h2 class='text-center display-4 mt-4 mb-4'>Update Review</h2>
+{% else %}
+  <h2 class='text-center display-4 mt-4 mb-4'>Create Review</h2>
+{% endif %}
+  <hr>
+  <form class="ml-4 mt-4 mr-4" method='POST'>
+    {% csrf_token %}
+    {% bootstrap_form form %}
+    <div class="text-right">
+      <a href="{% url 'movies:index' %}"><button class="btn btn-dark">Back</button></a>
+      <button class="btn btn-primary ml-2">Submit</button>
+    </div>
+  </form>
+{% endblock %}

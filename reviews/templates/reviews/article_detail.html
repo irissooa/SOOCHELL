@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+
+{% block content %}
+  <section id="reviews" class="blog">
+      <div class="container">
+
+        <div class="row">
+
+          <div class="col-lg-8 entries">
+
+            <article class="entry entry-single">
+
+              <div class="entry-img">
+                <img src="assets/img/blog-1.jpg" alt="" class="img-fluid">
+              </div>
+
+              <h2 class="entry-title">
+                <p>{{ review.title }}</p>
+              </h2>
+
+              <div class="entry-meta">
+                <ul>
+                  <li class="d-flex align-items-center"><i class="icofont-user"></i> <a href="#">{{ review.user }}</a></li>
+                  <li class="d-flex align-items-center"><i class="icofont-wall-clock"></i><time datetime="2020-01-01">{{ review.updated_at }}</time></li>
+                </ul>
+              </div>
+
+              <div class="entry-content">
+                <p>
+                  {{review.content}}
+                </p>
+              </div>
+
+              {% if request.user == review.user %}
+              <div class='mt-2 d-flex justify-content-end'>
+                <a href="{% url 'reviews:update_review' review.pk %}" class='btn btn-warning btn-sm mr-1'><i class="far fa-edit"></i></a>
+                <form action="{% url 'reviews:delete_review' review.pk %}" method='POST'>
+                    {% csrf_token %}
+                    <button class='btn btn-danger btn-sm mr-1'><i class="far fa-trash-alt"></i></button>
+                </form>
+              </div>
+              {% endif %}
+            </article><!-- End blog entry -->
+
+            <div class="blog-comments">
+              {% comment %} 댓글 개수? {% endcomment %}
+              <h4 class="comments-count">{{comments.count()}}</h4>
+                {% if request.user.is_authenticated %}
+                  <div class='d-flex justify-content-between mt-4'>
+                    <form action="{% url 'reviews:create_comment' review.pk %}" method="POST">
+                        {% csrf_token %}
+                          <p class="mb-1">Comment : {% bootstrap_form comment_form %} <button class='ml-2 btn btn-primary btn-sm'><i class="fas fa-plus-circle"></i></button></p>
+                    </form>
+                    <a href="{% url 'reviews:index' %}" class="btn btn-dark ">BACK</a>
+                  </div>
+                {% endif %}
+                <br>
+                {% for comment in comments %}
+                  <div id="comment-1" class="comment clearfix">
+                    <img src="#" class="comment-img  float-left" alt="">
+                    <h5>{{comment.user.username}} <a href="#" class="reply"><i class="icofont-reply"></i> Reply</a></h5>
+                    <time datetime="2020-01-01">{{comment.created_at}}</time>
+                    <p>
+                      {{ comment.content }}
+                    </p>
+                    {% if comment.user == request.user %}
+                    <a href="{% url 'reviews:update_comment' review.pk comment.pk %}" class="btn btn-warning btn-sm " alt="Modify"><i class="far fa-edit"></i></a>
+                    <form action="{% url 'reviews:delete_comment' review.pk comment.pk %}" method="POST">
+                    {% csrf_token %}
+                    <button class='btn btn-danger btn-sm mr-1'><i class="far fa-trash-alt"></i></button>
+                    </form>
+                    {% endif %}
+                    {% if request.resolver_match.url_name == 'update_comment' %}
+                      {% if comment.pk == comment_pk %}
+                        <p class='p-1'>↑</p>
+                          <form action="{% url 'reviews:update_comment' review.pk comment.pk%}" method="POST">
+                              {% csrf_token %}
+                              <p class='p-1'>{% bootstrap_form update_form.as_p %}</p>
+                              <p class='p-1'><button class='btn btn-primary btn-sm'>Modify</button></p>
+                          </form>
+                      {% endif %}
+                    {% endif %}
+                {% endfor %}
+            </div><!-- End comment #1 -->
+          </div><!-- End blog comments -->
+        </div><!-- End blog entries list -->
+
+      </div>
+   </section><!-- End Blog Section -->
+{% endblock %}

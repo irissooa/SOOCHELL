@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="row mt-4" style='background-color: black;'>
+  {% for genre_movie in page_obj %}
+    <div style='background-color: black;' class="text-light card col-3">
+      <img src="https://image.tmdb.org/t/p/w342/{{ genre_movie.poster_path }}" class="card-img-top mt-2" style="height:350px" alt="...">
+      <div class="card-body">
+        <h5 class="card-title"><strong>{{ genre_movie.title }}</strong></h5>
+        <p><i class="fas fa-heart" style="color: rgb(146, 0, 0);"></i><span class="ml-2">{{ genre_movie.like.count }}</span></p>
+        <div class="text-right">
+          <a href="{% url 'movies:movie_detail' genre_movie.pk %}" class="btn btn-dark">Movie's Detail</a>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+</div>
+<div class="text-center mt-2 mb-2" style="font-size:20px">
+ {% if page_obj.has_previous %}
+   <a href="?page={{ page_obj.previous_page_number }}" class="btn btn-primary btn-sm mr-1">Back</a>
+ {% endif %}
+   <span>{{ page_obj.number }}</span>
+   <span>/</span>
+   <span>{{ page_obj.paginator.num_pages }}</span>
+ {% if page_obj.has_next %}
+   <a href="?page={{ page_obj.next_page_number }}" class="btn btn-primary btn-sm ml-1">Next</a>
+ {% endif %}
+</div>
+
+{% endblock %}
