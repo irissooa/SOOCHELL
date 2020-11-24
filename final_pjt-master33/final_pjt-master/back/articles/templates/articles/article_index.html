@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+  <div class="mt-4">
+    <h2 class='mb-4 text-center display-4'>Article List</h2>
+    <hr>
+    <table class="table">
+      <thead class="thead-dark">
+        <tr>
+          <th style="width: 10%">#</th>
+          <th style="width: 75%">제목</th>
+          <th style="width: 15%">작성자</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for article in page_obj %}
+        <tr class="text-light">
+          <th scope="row">{{ article.pk }}</th>
+          <td><a class="text-light" href="{% url 'articles:detail_article' article.pk %}"><strong>{{ article.title }}</strong></a></td>
+          <td>{{ article.user }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <div class="text-right">
+      <a href="{% url 'articles:create_article' %}"><button class="btn btn-primary"><strong>글 작성</strong></button></a>
+    </div>
+  </div>
+  <div class="text-center mt-2 mb-2" style="font-size:20px">
+   {% if page_obj.has_previous %}
+     <a href="?page={{ page_obj.previous_page_number }}" class="btn btn-primary btn-sm mr-1">이전으로</a>
+   {% endif %}
+     <span>{{ page_obj.number }}</span>
+     <span>/</span>
+     <span>{{ page_obj.paginator.num_pages }}</span>
+   {% if page_obj.has_next %}
+     <a href="?page={{ page_obj.next_page_number }}" class="btn btn-primary btn-sm ml-1">다음으로</a>
+   {% endif %}
+  </div>
+{% endblock %}
