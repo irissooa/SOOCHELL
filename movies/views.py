@@ -4,7 +4,7 @@ from django.db.models import Count
 from django.contrib.auth import get_user_model
 from django.http import JsonResponse
 from django.core.paginator import Paginator
-# from accounts.forms import GenreChoiceForm
+from accounts.forms import GenreChoiceForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from datetime import date, timedelta
@@ -15,13 +15,13 @@ def home(request):
     return render(request,'movies/home.html')
 
 # Create your views here.
-# def genre_choice(request):
-#     user = request.user
-#     if request.method == 'POST':
-#         form = GenreChoiceForm(request.POST,instance=user)
-#         if form.is_valid():
-#             choice = form.save()
-#     return redirect('movies:index')
+def genre_choice(request):
+    user = request.user
+    if request.method == 'POST':
+        form = GenreChoiceForm(request.POST,instance=user)
+        if form.is_valid():
+            choice = form.save()
+    return redirect('movies:index')
 
 
 def index(request):
@@ -33,7 +33,7 @@ def index(request):
     movies = Movie.objects.all()
     today = date.today()
     sevendays = today - timedelta(days=1)
-    movie_ids = likeMovie.objects.filter(created_at__range=[sevendays,today]).values('movie_id').annotate(movie_count = Count('movie_id')).order_by('-movie_id')[::20]
+    movie_ids = LikeMovie.objects.filter(created_at__range=[sevendays,today]).values('movie_id').annotate(movie_count = Count('movie_id')).order_by('-movie_id')[::20]
     
     weekly_recommend = []
     for i in movie_ids:
@@ -67,6 +67,8 @@ def index(request):
 #출연진 추가, 리뷰톡톡 추가..
 def movie_detail(request, movie_pk):
     movie = get_object_or_404(Movie, pk=movie_pk)
+    print('야야야야야')
+    print('11111111111',movie.movie_id)
     User = get_user_model()
 
     if request.user.is_authenticated:
