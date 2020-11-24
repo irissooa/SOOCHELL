@@ -165,3 +165,5 @@ JWT_AUTH = {
 
 
 MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
+
+STATICFILES_DIRS = [BASE_DIR / 'static']
