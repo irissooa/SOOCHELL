@@ -11,6 +11,9 @@ from datetime import date, timedelta
 from django.views.decorators.http import require_POST
 
 
+def home(request):
+    return render(request,'movies/home.html')
+
 # Create your views here.
 # def genre_choice(request):
 #     user = request.user
@@ -52,7 +55,7 @@ def index(request):
         'form':form,
         'genres': genres,
         'movies': movies,
-        'recommend_movies_days1': weekly_recommend[:10]
+        'recommend_movies_days1': weekly_recommend[:10],
         'recommend_movies_days2': weekly_recommend[5:10],
         'recommend_movies_genre1': recommend_movies2[:5],
         'recommend_movies_genre2': recommend_movies2[5:10],

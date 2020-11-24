@@ -15,8 +15,7 @@ class ReviewForm(forms.ModelForm):
 class CommentForm(forms.ModelForm):
     content = forms.CharField(max_length=100,
     label="",
-    widget=forms.TextInput(attrs={'placeholder': 'Share your idea!',
-    'size'=100}))
+    widget=forms.TextInput(attrs={'placeholder': 'Share your idea!','size':100}))
     class Meta:
         model = Comment
         fields = ['content']
