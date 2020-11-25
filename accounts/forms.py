@@ -34,7 +34,6 @@ class GenreChoiceForm(forms.ModelForm):
             required=False
             )
 
-
     class Meta:
         model = User
         fields = ['genre']

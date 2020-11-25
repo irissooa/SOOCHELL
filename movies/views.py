@@ -25,21 +25,46 @@ def genre_choice(request):
     return redirect('movies:index')
 
 
+
 def index(request):
-    if request.user.is_authenticated:
-        form = GenreChoiceForm(instance=request.user)
-    else:
-        form = []
     genres = Genre.objects.all()
     movies = Movie.objects.all()
     today = date.today()
     sevendays = today - timedelta(days=1)
-    movie_ids = LikeMovie.objects.filter(created_at__range=[sevendays,today]).values('movie_id').annotate(movie_count = Count('movie_id')).order_by('-movie_id')[::20]
+    #movie_ids = LikeMovie.objects.filter(created_at__range=[sevendays,today]).values('movie_id').annotate(movie_count = Count('movie_id')).order_by('-movie_id')[::20]
+    movie_ids = LikeMovie.objects.filter(created_at__range=[sevendays,today]).values('movie_id')
     
+    
+    #7일동안 좋아요한 영화보여주기
     weekly_recommend = []
     for i in movie_ids:
         weekly_recommend.append(Movie.objects.get(id=i['movie_id']))
 
+    
+    #유저가 좋아요한 영화와 비슷한 영화 추천
+    API_KEY='48bad6a2dc7df8164930b0ed851e6d37'
+    language = 'ko-KR'
+    params = {'api_key':API_KEY, 'language':language}
+    
+    movie_ids_api = []
+    for i in movie_ids:
+        item=Movie.objects.filter(id=i['movie_id']).values()
+        print(item,'dd')
+        movie_ids_api.append(item[0]['movie_id'])
+
+    similar_title, similar_posterpath=[],[]
+    for movie_id in movie_ids_api:
+        URL=f'https://api.themoviedb.org/3/movie/{movie_id}/similar'
+
+        res = requests.get(URL, params=params)
+        similar_items = res.json()['results']
+        if len(similar_items) > 1:
+            for i in range(15):
+                similar_title.append(similar_items[i]['original_title'])
+                similar_posterpath.append(similar_items[i]['poster_path'])
+    
+    
+    #장르별 무비 추천
     recommend_movies2 = []
     if request.user.is_authenticated:
         if request.user.genre.count():
@@ -60,7 +85,10 @@ def index(request):
         'recommend_movies_days2': weekly_recommend[5:10],
         'recommend_movies_genre1': recommend_movies2[:5],
         'recommend_movies_genre2': recommend_movies2[5:10],
+        'similar_title':similar_title,
+        'similar_posterpath':similar_posterpath,
     }
+
     return render(request, 'movies/index.html', context)
 
 
@@ -117,11 +145,11 @@ def movie_like(request, movie_pk):
     movie = get_object_or_404(Movie, pk=movie_pk)
 
     if movie.like.filter(pk=user.pk).exists():
-        m1 = like_time.objects.filter(user=user).filter(movie=movie)
+        m1 = LikeMovie.objects.filter(user=user).filter(movie=movie)
         m1.delete()
         liked = False
     else:
-        m1 = like_time.objects.create(user=user,movie=movie)
+        m1 = LikeMovie.objects.create(user=user,movie=movie)
         liked = True
 
     context = {
