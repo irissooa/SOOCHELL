@@ -11,26 +11,28 @@
 
             <article class="entry entry-single">
 
-              <div class="entry-img">
+              <h2 class="entry-title">
+                <p>{{ movie.title }}</p>
+                <p>{{ movie.original_title }}</p>
+              </h2>
+              {% comment %} <div class="entry-img">
                 <!-- 여기 예고편, 안되면 포스터  넣자 -->
                 <!-- <youtube 
                 :video-id="videoId"
                 @ready="ready" @playing="playing"
                 :player-vars="{ autoplay: 1 }"
                 ></youtube> -->
-                <img src="assets/img/blog-1.jpg" alt="" class="img-fluid">
+                <img src="https://image.tmdb.org/t/p/w342/{{ movie.poster_path }}" class="img-fluid" alt="">
               </div>
+               {% endcomment %}
 
-              <h2 class="entry-title">
-                <p>{{ movie.title }}</p>
-              </h2>
 
               <div class="entry-meta">
                 <ul>
                   <li class="d-flex align-items-center"><i class="icofont-user"></i><strong>{{movie.vote_average}} / {{movie.vote_count}}</strong></li>
                   <form class="like-form" data-movie-id='{{movie.pk}}'>
                     {% csrf_token %}
-                    {% if user in movie.liker.all %}
+                    {% if user in movie.like.all %}
                     <li class="d-flex align-items-center">
                       <button class="btn btn-link">
                         <i id='like-btn-{{movie.pk}}' class="fas fa-heart fa-lg" style="color:crimson;"></i>
@@ -45,7 +47,7 @@
                     {% endif %}
                   </form>
                   <li class="d-flex align-items-center">
-                  <span id = 'like-count-{{movie.pk}}'>{{ movie.liker.all|length }} </span>Likes<br>
+                  <span id = 'like-count-{{movie.pk}}'>{{ movie.like.all|length }} </span>Likes<br>
                   </li>
                 </ul>
               </div>
@@ -66,10 +68,25 @@
                 </blockquote>
 
               </div>
-
+            
             </article><!-- End blog entry -->
+            {% comment %} 유사한 영화 {% endcomment %}
+            <div class="row mt-4" style='background-color: black;'>
+            {% for similar_movie in similar_movies %}
+              <div style='background-color: black;' class="text-light card col-3">
+                <img src="https://image.tmdb.org/t/p/w342/{{similar_movie.poster_path }}" class="card-img-top mt-2" style="height:350px" alt="...">
+                <div class="card-body">
+                  <h5 class="card-title"><strong>{{similar_movie.title }}</strong></h5>
+
+                  <div class="text-right">
+                    <a href="{% url 'movies:movie_detail' similar_movie.pk %}" class="btn btn-dark">Movie's Detail</a>
+                  </div>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
             <!-- 리뷰 링크 -->
-            <div class="blog-author clearfix">
+            {% comment %} <div class="blog-author clearfix">
               <img src="assets/img/blog-author.jpg" class="rounded-circle float-left" alt="">
               <h4>Jane Smith</h4>
               <div class="social-links">
@@ -80,7 +97,7 @@
               <p>
                 Itaque quidem optio quia voluptatibus dolorem dolor. Modi eum sed possimus accusantium. Quas repellat voluptatem officia numquam sint aspernatur voluptas. Esse et accusantium ut unde voluptas.
               </p>
-            </div><!-- End blog author bio -->
+            </div><!-- End blog author bio --> {% endcomment %}
 
           </div><!-- End blog entries list -->
 
@@ -89,36 +106,21 @@
             <div class="sidebar">
               <!-- 영화 출연진들 보이기 -> 이거도 각 컴포넌트로 만들어서 돌려야되나? ㅎ-->
               <h3 class="sidebar-title">출연진</h3>
-              <div class="sidebar-item recent-posts">
-                <div class="post-item clearfix">
-                  <img src="assets/img/business-6.jpg" alt="">
-                  <h4><a href="blog-single.html">Nihil blanditiis at in nihil autem</a></h4>
-                  <time datetime="2020-01-01">Jan 1, 2020</time>
-                </div>
+              {% for actor in actor_name %}
+                <div class="sidebar-item recent-posts">
+                  <div class="post-item clearfix">
+                    {% comment %} <img src="https://image.tmdb.org/t/p/w342/{{ actor.poster_path }}" alt=""> {% endcomment %}
+                    <h4><a href="blog-single.html">{{actor}}</a></h4>
+                    <time datetime="2020-01-01">Jan 1, 2020</time>
+                  </div>
+              {% endfor %}
 
-                <div class="post-item clearfix">
-                  <img src="assets/img/business-20.jpg" alt="">
-                  <h4><a href="blog-single.html">Quidem autem et impedit</a></h4>
-                  <time datetime="2020-01-01">Jan 1, 2020</time>
-                </div>
+                  {% comment %} <div class="post-item clearfix">
+                    <img src="assets/img/business-20.jpg" alt="">
+                    <h4><a href="blog-single.html">Quidem autem et impedit</a></h4>
+                    <time datetime="2020-01-01">Jan 1, 2020</time>
+                  </div> {% endcomment %}
 
-                <div class="post-item clearfix">
-                  <img src="assets/img/business-26.jpg" alt="">
-                  <h4><a href="blog-single.html">Id quia et et ut maxime similique occaecati ut</a></h4>
-                  <time datetime="2020-01-01">Jan 1, 2020</time>
-                </div>
-
-                <div class="post-item clearfix">
-                  <img src="assets/img/business-30.jpg" alt="">
-                  <h4><a href="blog-single.html">Laborum corporis quo dara net para</a></h4>
-                  <time datetime="2020-01-01">Jan 1, 2020</time>
-                </div>
-
-                <div class="post-item clearfix">
-                  <img src="assets/img/business-16.jpg" alt="">
-                  <h4><a href="blog-single.html">Et dolores corrupti quae illo quod dolor</a></h4>
-                  <time datetime="2020-01-01">Jan 1, 2020</time>
-                </div>
 
               </div><!-- End sidebar recent posts-->
             </div><!-- End sidebar -->

@@ -119,7 +119,7 @@ def update_comment(request, review_pk, comment_pk):
                 'comments':comments,
                 'comment_pk':comment_pk
             }
-        return render(request,'reviews/review_detail.html', context)
+        return render(request,'reviews/detail_review.html', context)
     else:
         return redirect('reviews:detail_review', comment.review.pk)
     

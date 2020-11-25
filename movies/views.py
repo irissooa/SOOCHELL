@@ -77,7 +77,7 @@ def index(request):
         recommend_movies2 = recommend_movies_genre.order_by('-vote_average').distinct()[:10]
     
     context = {
-
+        # 'form':form,
         'genres': genres,
         'movies': movies,
         'recommend_movies_days1': weekly_recommend[:10],
