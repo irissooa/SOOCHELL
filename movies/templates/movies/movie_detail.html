@@ -23,8 +23,8 @@
                 :player-vars="{ autoplay: 1 }"
                 ></youtube> -->
                 <img src="https://image.tmdb.org/t/p/w342/{{ movie.poster_path }}" class="img-fluid" alt="">
-              </div>
-               {% endcomment %}
+              </div> {% endcomment %}
+              
 
 
               <div class="entry-meta">
@@ -51,11 +51,6 @@
                   </li>
                 </ul>
               </div>
-              <div class="row"><strong>Genres</strong>
-                {% for genre in movie.genres.all %}
-                  <p> {{ genre.name }}, </p>
-                {% endfor %}
-              </div>
 
               <div class="entry-content">
                 <blockquote>
@@ -71,15 +66,15 @@
             
             </article><!-- End blog entry -->
             {% comment %} 유사한 영화 {% endcomment %}
-            <div class="row mt-4" style='background-color: black;'>
+            <div class="row mt-4">
             {% for similar_movie in similar_movies %}
-              <div style='background-color: black;' class="text-light card col-3">
+              <div class="card col-3">
                 <img src="https://image.tmdb.org/t/p/w342/{{similar_movie.poster_path }}" class="card-img-top mt-2" style="height:350px" alt="...">
                 <div class="card-body">
                   <h5 class="card-title"><strong>{{similar_movie.title }}</strong></h5>
 
                   <div class="text-right">
-                    <a href="{% url 'movies:movie_detail' similar_movie.pk %}" class="btn btn-dark">Movie's Detail</a>
+                    <a href="{% url 'movies:movie_detail' similar_movie.id %}" class="btn btn-dark">Movie's Detail</a>
                   </div>
                 </div>
               </div>
@@ -106,12 +101,12 @@
             <div class="sidebar">
               <!-- 영화 출연진들 보이기 -> 이거도 각 컴포넌트로 만들어서 돌려야되나? ㅎ-->
               <h3 class="sidebar-title">출연진</h3>
-              {% for actor in actor_name %}
+              {% for actor in actors %}
                 <div class="sidebar-item recent-posts">
                   <div class="post-item clearfix">
-                    {% comment %} <img src="https://image.tmdb.org/t/p/w342/{{ actor.poster_path }}" alt=""> {% endcomment %}
-                    <h4><a href="blog-single.html">{{actor}}</a></h4>
-                    <time datetime="2020-01-01">Jan 1, 2020</time>
+                    <img src="https://image.tmdb.org/t/p/w342/{{ actor.profile_path }}" alt="">
+                    <h4><p>{{actor.name}}</p></h4>
+                    {% comment %} <time datetime="2020-01-01">Jan 1, 2020</time> {% endcomment %}
                   </div>
               {% endfor %}
 
