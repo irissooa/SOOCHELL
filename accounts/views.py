@@ -7,9 +7,9 @@ from .forms import CustomUserCreationForm
 
 # Create your views here.
 def signup(request):
-    if request.user.is_authenticated:
-        # 로그인되있으면 어디로 갈지 수정해야함
-        return redirect('movies:index')
+    # if request.user.is_authenticated:
+    #     # 로그인되있으면 어디로 갈지 수정해야함
+    #     return redirect('movies:index')
     
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
