@@ -36,10 +36,9 @@ def index(request):
     
     
     #7일동안 좋아요한 영화보여주기
-    weekly_recommend = []
+    weekly_recommends = []
     for i in movie_ids:
-    
-        weekly_recommend.append(Movie.objects.get(id=i['movie_id']))
+        weekly_recommends.append(Movie.objects.get(id=i['movie_id']))
 
     
     #유저가 좋아요한 영화와 비슷한 영화 추천
@@ -60,31 +59,45 @@ def index(request):
         res = requests.get(URL, params=params)
         similar_items = res.json()['results']
         if len(similar_items) > 1:
-            for i in range(15):
+            for i in range(20):
                 similar_movies.append(similar_items[i])
 
+
+    #유저가 좋아요한 recommended 영화 추천
+    recommended_movies = []
+    for movie_id in movie_ids_api:
+        URL_2 = f'https://api.themoviedb.org/3/movie/{movie_id}/recommendations'
+        res_2 = requests.get(URL,params=params)
+        recommended_itmes = res_2.json()['results']
+        if len(recommended_itmes) > 1:
+            for i in range(20):
+                recommended_movies.append(recommended_itmes[i])
+
+
+    #유저가 좋아요한 장르별 영화 추천
+    # user_genres = []
+    # movie_genres = request.user.genre.all()
+    # for i in movie_genres:
+    #     user_genres.append(i.id)
+    # recommend_movies_genre = Movie.objects.filter(genres__id = user_genres[0])
+    # for i in user_genres[1:]:
+    #     recommend_movies_genre = recommend_movies_genre|Movie.objects.filter(genres__id=i)
+    # recommend_movies2 = recommend_movies_genre.order_by('-vote_average').distinct()[:10]
     
-    #장르별  추천
-    recommend_movies2 = []
-    if request.user.genre.count():
-        user_genres = []
-        movie_genres = request.user.genre.all()
-        for i in movie_genres:
-            user_genres.append(i.id)
-        recommend_movies_genre = Movie.objects.filter(genres__id = user_genres[0])
-        for i in user_genres[1:]:
-            recommend_movies_genre = recommend_movies_genre|Movie.objects.filter(genres__id=i)
-        recommend_movies2 = recommend_movies_genre.order_by('-vote_average').distinct()[:10]
-    
+
     context = {
         # 'form':form,
         'genres': genres,
         'movies': movies,
-        'recommend_movies_days1': weekly_recommend[:10],
-        'recommend_movies_days2': weekly_recommend[5:10],
-        'recommend_movies_genre1': recommend_movies2[:5],
-        'recommend_movies_genre2': recommend_movies2[5:10],
-        'similar_movies':similar_movies,
+        'weekly_recommends1': weekly_recommends[:10],
+        'weekly_recommends2': weekly_recommends[10:21],
+        'similar_movies1':similar_movies[:10],
+        'similar_movies2':similar_movies[10:21],
+        'recommended_movies1':recommended_movies[:10],
+        'recommended_movies2':recommended_movies[10:21],
+
+        # 'recommend_movies_genre1': recommend_movies2[:5],
+        # 'recommend_movies_genre2': recommend_movies2[5:10],
     }
 
     return render(request, 'movies/index.html', context)
@@ -129,7 +142,7 @@ def movie_detail(request, movie_pk):
             'similar_movies':similar_movies,
             'actors':actors,
         }
-        return render(request, 'movies/movie_detail.html',context)
+        return render(request,'movies/movie_detail.html',context)
     else:
         return redirect('accounts:login')
 
