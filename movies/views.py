@@ -9,7 +9,8 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from datetime import date, timedelta
 from django.views.decorators.http import require_POST
-
+import requests
+import json
 
 # def home(request):
 #     return render(request,'movies/home.html')
@@ -67,18 +68,48 @@ def index(request):
 #출연진 추가, 리뷰톡톡 추가..
 def movie_detail(request, movie_pk):
     movie = get_object_or_404(Movie, pk=movie_pk)
-    print('야야야야야')
-    print('11111111111',movie.movie_id)
+    movie_id = movie.movie_id
     User = get_user_model()
 
     if request.user.is_authenticated:
-        user = get_object_or_404(User, username=request.user.username)
+        user = get_object_or_404(User,username=request.user.username)
+
+        
+        API_KEY='48bad6a2dc7df8164930b0ed851e6d37'
+        language = 'ko-KR'
+        params = {'api_key':API_KEY, 'language':language}
+        
+        #비슷한 영화
+        URL = f'https://api.themoviedb.org/3/movie/{movie_id}/similar'
+        res = requests.get(URL, params = params)
+
+        similar_items = res.json()['results']
+
+        #출연진
+        URL_2 = f'https://api.themoviedb.org/3/movie/{movie_id}/credits'
+        res_2 = requests.get(URL_2,params=params)
+
+        movie_credit = res_2.json()['cast']
+
+        similar_title, similar_posterpath, actor_name, actor_profile = [],[],[],[]
+        for i in range(10):
+            similar_title.append(similar_items[i]['original_title'])
+            similar_posterpath.append(similar_items[i]['poster_path'])
+            actor_name.append(movie_credit[i]['name'])
+            actor_profile.append(movie_credit[i]['profile_path'])
+    
         context = {
-        'movie': movie,
+            'movie':movie,
+            'similar_title':similar_title,
+            'similar_posterpath':similar_posterpath,
+            'actor_name':actor_name,
+            'actor_profile':actor_profile,
         }
-        return render(request, 'movies/movie_detail.html', context)
+        return render(request, 'movies/movie_detail.html',context)
     else:
         return redirect('accounts:login')
+
+
 
 
 def movie_like(request, movie_pk):
