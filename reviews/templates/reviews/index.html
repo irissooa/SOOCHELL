@@ -98,6 +98,7 @@
     const forms = document.querySelectorAll('.like-form')
     const csrfTokenInput = document.querySelector('input[name="csrfmiddlewaretoken"]')
     const csrftoken = csrfTokenInput.value
+    console.log(csrfTokenInput)
     forms.forEach(form => {
       console.log(form,'들어왔니')
       form.addEventListener('submit',(event)=>{

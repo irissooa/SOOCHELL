@@ -396,3 +396,14 @@ const token = localStorage.getItem('jwt')
 
 그 뒤에 base.html `{% load static %}`을 한 뒤 `<link rel="stylesheet" type="text/css" href="{% static 'accounts/stylesheet/css/style.css' %}">` 폴더의 절대 경로만 잘 적어주면 적용이 된다!!!!
 
+### Bootstrap form error
+
+![image-20201125215909103](README.assets/image-20201125215909103.png)
+
+이건 또 무슨...색다른 에러일까....
+
+
+
+detail credit 필드들 전부 가져오게 바꾸기
+
+movie like에 m1만 지우지 말고 movie.like도 지워야되지 않을까?
