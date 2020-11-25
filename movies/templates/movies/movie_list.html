@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<div class="row mt-4" style='background-color: black;'>
+<div class="row mt-4">
   {% for search_movie in page_obj %}
   <div class="card col-3">
       <img src="https://image.tmdb.org/t/p/w342/{{ search_movie.poster_path }}" class="card-img-top mt-2" style="height:350px" alt="...">
