@@ -41,7 +41,6 @@ class GenreChoiceForm(forms.ModelForm):
             widget=forms.CheckboxSelectMultiple(),
             required=False
             )
-
     class Meta:
         model = User
         fields = ['genre']

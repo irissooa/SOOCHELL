@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.forms import AuthenticationForm
+from .forms import CustomUserCreationForm, GenreChoiceForm
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login as auth_login, logout as auth_logout
-from .forms import CustomUserCreationForm
+# from .forms import CustomUserCreationForm
 
 
 # Create your views here.
@@ -16,9 +17,13 @@ def signup(request):
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
-            auth_login(request,user)
-            # 어디로 갈지 수정해야함
-            return redirect('movies:index')
+            # user.save()
+            genre_user = request.POST.getlist('genre')
+            gform = GenreChoiceForm(genre_user,instance= request.user)
+            if gform.is_valid():
+                gform.save()
+                auth_login(request,user)
+                return redirect('movies:index')
     else:
         form=CustomUserCreationForm()
     context = {
