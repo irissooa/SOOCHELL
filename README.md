@@ -392,3 +392,7 @@ const token = localStorage.getItem('jwt')
 
 ### static
 
+무료템플릿을 쓰기 위해 accounts앱에 static폴더를 만들어서 해당 무료 템플릿에서 만든 css, js,등 파일들을 넣어준다.
+
+그 뒤에 base.html `{% load static %}`을 한 뒤 `<link rel="stylesheet" type="text/css" href="{% static 'accounts/stylesheet/css/style.css' %}">` 폴더의 절대 경로만 잘 적어주면 적용이 된다!!!!
+

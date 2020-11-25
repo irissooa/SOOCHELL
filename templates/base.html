@@ -40,7 +40,7 @@
 </head>
 <body>
   <!-- ======= Header ======= -->
-    <header id="header" class="fixed-top">
+    <header id="header" class="sticky-top">
       <div class="container d-flex align-items-center">
         <h1 class="logo"><a href="{% url 'accounts:signup' %}">SOOCHELL</a></h1>
 
@@ -176,9 +176,14 @@
 
     <!-- Template Main JS File -->
     <script src="{% static 'accounts/stylesheet/js/main.js'%}"></script>
+{% comment %} axioscdn을 가져옴 {% endcomment %}
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
     {% block script %}
     {% endblock script %}
+
+  
 </body>
 </html>
 <style>

@@ -2,7 +2,7 @@
 {% load bootstrap4 %}
 
 {% block content %}
-  <section id="reviews" class="blog">
+  <section id="blog" class="blog">
       <div class="container">
 
         <div class="row">
@@ -11,9 +11,9 @@
 
             <article class="entry entry-single">
 
-              <div class="entry-img">
+              {% comment %} <div class="entry-img">
                 <img src="assets/img/blog-1.jpg" alt="" class="img-fluid">
-              </div>
+              </div> {% endcomment %}
 
               <h2 class="entry-title">
                 <p>{{ review.title }}</p>
@@ -22,7 +22,26 @@
               <div class="entry-meta">
                 <ul>
                   <li class="d-flex align-items-center"><i class="icofont-user"></i> <a href="#">{{ review.user }}</a></li>
-                  <li class="d-flex align-items-center"><i class="icofont-wall-clock"></i><time datetime="2020-01-01">{{ review.updated_at }}</time></li>
+                  <li class="d-flex align-items-center"><i class="icofont-wall-clock"></i><time datetime="20-01-01">{{ review.updated_at }}</time></li>
+                  <form class="like-form" data-review-id='{{review.pk}}'>
+                    {% csrf_token %}
+                    {% if user in review.like_users.all %}
+                    <li class="d-flex align-items-center">
+                      <button class="btn btn-link">
+                        <i id='like-btn-{{review.pk}}' class="fas fa-heart fa-lg" style="color:crimson;"></i>
+                      </button>
+                    </li>
+                    {% else %}
+                    <li class="d-flex align-items-center">
+                      <button class="btn btn-link">
+                        <i id='like-btn-{{review.pk}}' class="fas fa-heart fa-lg" style="color:gray;"></i>
+                      </button>
+                    </li>
+                    {% endif %}
+                  </form>
+                  <li class="d-flex align-items-center">
+                  <span id = 'like-count-{{review.pk}}'>{{ review.like_users.all|length }} </span>Likes<br>
+                  </li>
                 </ul>
               </div>
 
@@ -45,7 +64,7 @@
 
             <div class="blog-comments">
               {% comment %} 댓글 개수? {% endcomment %}
-              <h4 class="comments-count">{{comments.count()}}</h4>
+              <h4 class="comments-count">{{comments.count}}</h4>
                 {% if request.user.is_authenticated %}
                   <div class='d-flex justify-content-between mt-4'>
                     <form action="{% url 'reviews:create_comment' review.pk %}" method="POST">
@@ -89,3 +108,34 @@
       </div>
    </section><!-- End Blog Section -->
 {% endblock %}
+
+{% block script %}
+<script>
+    const forms = document.querySelectorAll('.like-form')
+    const csrfTokenInput = document.querySelector('input[name="csrfmiddlewaretoken"]')
+    const csrftoken = csrfTokenInput.value
+    forms.forEach(form => {
+      console.log(form,'들어왔니')
+      form.addEventListener('submit',(event)=>{
+        event.preventDefault()
+        const reviewId = form.dataset.reviewId
+        axios.post(`/reviews/${reviewId}/like/`,
+          {},
+          {headers: {'X-CSRFToken': csrftoken}}
+          )
+          // 응답을 인자로 넘겨줌!
+            .then((response)=>{
+              if (response.data.error === 'unauthorized') {
+                window.location.href = '/acccounts/login/'
+              }
+              //응답오면 좋아요 표시 수정, 사람수 수정
+              const likeBtn = document.querySelector(`#like-btn-${reviewId}`)
+              const likeCount = document.querySelector(`#like-count-${reviewId}`)
+              likeBtn.style.color = response.data.liked ? 'crimson' : 'gray'
+              // 응답이 왔을 때 좋아요 표시 
+              likeCount.innerText = response.data.count
+          })
+      })
+    })
+</script>
+{% endblock script %}

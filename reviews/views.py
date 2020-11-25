@@ -6,7 +6,7 @@ from django.views.decorators.http import require_POST
 from django.core.paginator import Paginator
 from .models import Review, Comment
 from .forms import ReviewForm, CommentForm
-
+from django.http import JsonResponse
 # Create your views here.
 
 def index(request):
@@ -31,7 +31,7 @@ def create_review(request):
             review.user = request.user
             review.save()
             #페이지 다시
-            return redirect('reviews:review_detail',review.pk)
+            return redirect('reviews:detail_review',review.pk)
 
     else:
         form=ReviewForm()
@@ -52,7 +52,7 @@ def detail_review(request, review_pk):
         'comment_form': comment_form,
         'comments': comments,
     }
-    return render(request, 'reviews/review_detail.html', context)
+    return render(request, 'reviews/detail_review.html', context)
 
 
 
