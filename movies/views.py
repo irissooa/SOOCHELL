@@ -38,6 +38,7 @@ def index(request):
     #7일동안 좋아요한 영화보여주기
     weekly_recommend = []
     for i in movie_ids:
+    
         weekly_recommend.append(Movie.objects.get(id=i['movie_id']))
 
     
@@ -52,7 +53,7 @@ def index(request):
         print(item,'dd')
         movie_ids_api.append(item[0]['movie_id'])
 
-    similar_title, similar_posterpath=[],[]
+    similar_movies = []
     for movie_id in movie_ids_api:
         URL=f'https://api.themoviedb.org/3/movie/{movie_id}/similar'
 
@@ -60,22 +61,20 @@ def index(request):
         similar_items = res.json()['results']
         if len(similar_items) > 1:
             for i in range(15):
-                similar_title.append(similar_items[i]['original_title'])
-                similar_posterpath.append(similar_items[i]['poster_path'])
+                similar_movies.append(similar_items[i])
+
     
-    
-    #장르별 무비 추천
+    #장르별  추천
     recommend_movies2 = []
-    if request.user.is_authenticated:
-        if request.user.genre.count():
-            user_genres = []
-            movie_genres = request.user.genre.all()
-            for i in movie_genres:
-                user_genres.append(i.id)
-            recommend_movies_genre = Movie.objects.filter(genres__id = user_genres[0])
-            for i in user_genres[1:]:
-                recommend_movies_genre = recommend_movies_genre|Movie.objects.filter(genres__id=i)
-            recommend_movies2 = recommend_movies_genre.order_by('-vote_average').distinct()[:10]
+    if request.user.genre.count():
+        user_genres = []
+        movie_genres = request.user.genre.all()
+        for i in movie_genres:
+            user_genres.append(i.id)
+        recommend_movies_genre = Movie.objects.filter(genres__id = user_genres[0])
+        for i in user_genres[1:]:
+            recommend_movies_genre = recommend_movies_genre|Movie.objects.filter(genres__id=i)
+        recommend_movies2 = recommend_movies_genre.order_by('-vote_average').distinct()[:10]
     
     context = {
         # 'form':form,
@@ -85,8 +84,7 @@ def index(request):
         'recommend_movies_days2': weekly_recommend[5:10],
         'recommend_movies_genre1': recommend_movies2[:5],
         'recommend_movies_genre2': recommend_movies2[5:10],
-        'similar_title':similar_title,
-        'similar_posterpath':similar_posterpath,
+        'similar_movies':similar_movies,
     }
 
     return render(request, 'movies/index.html', context)
@@ -119,19 +117,17 @@ def movie_detail(request, movie_pk):
 
         movie_credit = res_2.json()['cast']
 
-        similar_title, similar_posterpath, actor_name, actor_profile = [],[],[],[]
+        similar_movies = []
+        actors = [] 
         for i in range(10):
-            similar_title.append(similar_items[i]['original_title'])
-            similar_posterpath.append(similar_items[i]['poster_path'])
-            actor_name.append(movie_credit[i]['name'])
-            actor_profile.append(movie_credit[i]['profile_path'])
+            similar_movies.append(similar_items[i])
+            actors.append(movie_credit[i])
+
     
         context = {
             'movie':movie,
-            'similar_title':similar_title,
-            'similar_posterpath':similar_posterpath,
-            'actor_name':actor_name,
-            'actor_profile':actor_profile,
+            'similar_movies':similar_movies,
+            'actors':actors,
         }
         return render(request, 'movies/movie_detail.html',context)
     else:
