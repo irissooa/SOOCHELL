@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<main id="main">
+ <!-- ======= Blog Section ======= -->
+    <section id="blog" class="blog">
+      <div class="container">
+
+      <div class="ml-3">
+        <a href="{% url 'reviews:create_review' %}"><button class="btn btn-primary"><i class="fas fa-edit"></i></button></a>
+      </div>
+        <div class="row">
+          {% for review in reviews %}
+          
+          
+          <div class="col-lg-4  col-md-6 d-flex align-items-stretch" data-aos="fade-up">
+            <article class="entry">
+
+              {% comment %} <div class="entry-img">
+                <img src="assets/img/blog-1.jpg" alt="" class="img-fluid">
+              </div> {% endcomment %}
+
+              <h2 class="entry-title">
+                <a href="{% url 'reviews:detail_review' review.pk %}">{{review.title}}</a>
+              </h2>
+
+              <div class="entry-meta">
+                <ul>
+                  <li class="d-flex align-items-center"><i class="icofont-user"></i> <p>{{review.user}}</p></li>
+                  <form class="like-form" data-review-id='{{review.pk}}'>
+                    {% csrf_token %}
+                    {% if user in review.like_users.all %}
+                    <li class="d-flex align-items-center">
+                      <button class="btn btn-link">
+                        <i id='like-btn-{{review.pk}}' class="fas fa-heart fa-lg" style="color:crimson;"></i>
+                      </button>
+                    </li>
+                    {% else %}
+                    <li class="d-flex align-items-center">
+                      <button class="btn btn-link">
+                        <i id='like-btn-{{review.pk}}' class="fas fa-heart fa-lg" style="color:gray;"></i>
+                      </button>
+                    </li>
+                    {% endif %}
+                  </form>
+                  <li class="d-flex align-items-center">
+                  <span id = 'like-count-{{review.pk}}'>{{ review.like_users.all|length }} </span>Likes<br>
+                  </li>
+                  {% comment %} <li class="d-flex align-items-center"><i class="icofont-wall-clock"></i> <a href="blog-single.html"><time datetime="2020-01-01">{{review.created_at}}</time></a></li> {% endcomment %}
+                </ul>
+              </div>
+
+              <div class="entry-content">
+                <p>
+                  {{review.content}}
+                </p>
+                <div class="read-more">
+                  <a href="{% url 'reviews:detail_review' review.pk %}">Read More</a>
+                </div>
+              </div>
+
+            </article><!-- End blog entry -->
+          </div>
+            {% endfor %}
+
+        </div>
+
+        <div class="blog-pagination" data-aos="fade-up">
+          <ul class="justify-content-center">
+            <li class="disabled"><i class="icofont-rounded-left"></i></li>
+            <li><a href="#">1</a></li>
+            <li class="active"><a href="#">2</a></li>
+            <li><a href="#">3</a></li>4
+            <li><a href="#"><i class="icofont-rounded-right"></i></a></li>
+          </ul>
+        </div>
+
+      </div>
+    </section><!-- End Blog Section -->
+      <div class="text-center mt-2 mb-2" style="font-size:20px">
+      {% if per_page.has_previous %}
+        <a href="?page={{ per_page.previous_page_number }}" class="btn btn-primary btn-sm mr-1">BEFORE</a>
+      {% endif %}
+        <span>{{ per_page.number }}</span>
+        <span>/</span>
+        <span>{{ per_page.paginator.num_pages }}</span>
+      {% if per_page.has_next %}
+        <a href="?page={{ per_page.next_page_number }}" class="btn btn-primary btn-sm ml-1">NEXT</a>
+      {% endif %}
+      </div>
+    </div>
+  </main><!-- End #main -->
+ 
+{% endblock %}
+
+{% block script %}
+<script>
+    const forms = document.querySelectorAll('.like-form')
+    const csrfTokenInput = document.querySelector('input[name="csrfmiddlewaretoken"]')
+    const csrftoken = csrfTokenInput.value
+    forms.forEach(form => {
+      console.log(form,'들어왔니')
+      form.addEventListener('submit',(event)=>{
+        event.preventDefault()
+        const reviewId = form.dataset.reviewId
+        axios.post(`/reviews/${reviewId}/like/`,
+          {},
+          {headers: {'X-CSRFToken': csrftoken}}
+          )
+          // 응답을 인자로 넘겨줌!
+            .then((response)=>{
+              if (response.data.error === 'unauthorized') {
+                window.location.href = '/acccounts/login/'
+              }
+              //응답오면 좋아요 표시 수정, 사람수 수정
+              const likeBtn = document.querySelector(`#like-btn-${reviewId}`)
+              const likeCount = document.querySelector(`#like-count-${reviewId}`)
+              likeBtn.style.color = response.data.liked ? 'crimson' : 'gray'
+              // 응답이 왔을 때 좋아요 표시 
+              likeCount.innerText = response.data.count
+          })
+      })
+    })
+</script>
+{% endblock script %}

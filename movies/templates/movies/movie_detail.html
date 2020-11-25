@@ -28,13 +28,24 @@
               <div class="entry-meta">
                 <ul>
                   <li class="d-flex align-items-center"><i class="icofont-user"></i><strong>{{movie.vote_average}} / {{movie.vote_count}}</strong></li>
+                  <form class="like-form" data-movie-id='{{movie.pk}}'>
+                    {% csrf_token %}
+                    {% if user in movie.liker.all %}
+                    <li class="d-flex align-items-center">
+                      <button class="btn btn-link">
+                        <i id='like-btn-{{movie.pk}}' class="fas fa-heart fa-lg" style="color:crimson;"></i>
+                      </button>
+                    </li>
+                    {% else %}
+                    <li class="d-flex align-items-center">
+                      <button class="btn btn-link">
+                        <i id='like-btn-{{movie.pk}}' class="fas fa-heart fa-lg" style="color:gray;"></i>
+                      </button>
+                    </li>
+                    {% endif %}
+                  </form>
                   <li class="d-flex align-items-center">
-                  {% if user in movie.like.all %}
-                    <i class="fas fa-heart fa-lg like-btn" style="color:crimson; cursor:pointer;" data-id="{{ movie.pk }}"></i>
-                  {% else %}
-                    <i class="fas fa-heart fa-lg like-btn" style="color:gray; cursor:pointer;" data-id="{{ movie.pk }}"></i>
-                  {% endif %}
-                  <span id="like-count-{{ movie.pk }}">{{ movie.like.all|length }}명이 좋아합니다</span>
+                  <span id = 'like-count-{{movie.pk}}'>{{ movie.liker.all|length }} </span>Likes<br>
                   </li>
                 </ul>
               </div>
@@ -120,26 +131,33 @@
 {% endblock%}
 
 {% block script %}
-    const likeBtns = document.querySelectorAll('i.like-btn')
-    likeBtns.forEach(likeBtns => {
-      likeBtns.addEventListener('click', event => {
-        //console.log('like button clicked!')
-        console.log(event.target.dataset)
-        const movie_pk = event.target.dataset.id
-        axios.get(`/movies/${movie_pk}/like`)
-          .then(response => {
-            console.log(response.data)
-            console.log(response.data.created_at)
-            const { liked, count } = response.data
-            if(liked) {
-              event.target.style.color = 'crimson'
-            }
-            else {
-              event.target.style.color = 'gray'
-            }
-            const likeCount = document.querySelector(`#like-count-${movie_pk}`).innerText = count + '명이 좋아합니다'
+<script>
+    const forms = document.querySelectorAll('.like-form')
+    const csrfTokenInput = document.querySelector('input[name="csrfmiddlewaretoken"]')
+    const csrftoken = csrfTokenInput.value
+    forms.forEach(form => {
+      //console.log(form,'들어왔니')
+      form.addEventListener('submit',(event)=>{
+        event.preventDefault()
+        const movieId = form.dataset.movieId
+        axios.post(`/movies/${movieId}/like/`,
+          {},
+          {headers: {'X-CSRFToken': csrftoken}}
+          )
+          // 응답을 인자로 넘겨줌!
+            .then((response)=>{
+              if (response.data.error === 'unauthorized') {
+                window.location.href = '/acccounts/login/'
+              }
+              //응답오면 좋아요 표시 수정, 사람수 수정
+              const likeBtn = document.querySelector(`#like-btn-${movieId}`)
+              const likeCount = document.querySelector(`#like-count-${movieId}`)
+              likeBtn.style.color = response.data.liked ? 'crimson' : 'gray'
+              // 응답이 왔을 때 좋아요 표시 
+              likeCount.innerText = response.data.count
           })
       })
     })
+</script>
 {% endblock script %}
 
