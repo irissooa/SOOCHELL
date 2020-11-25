@@ -123,7 +123,7 @@ def movie_detail(request, movie_pk):
         res = requests.get(URL, params = params)
 
         similar_items = res.json()['results']
-
+        print('similaㅇ린어링넟ㄹ',similar_items)
         #출연진
         URL_2 = f'https://api.themoviedb.org/3/movie/{movie_id}/credits'
         res_2 = requests.get(URL_2,params=params)
@@ -132,11 +132,13 @@ def movie_detail(request, movie_pk):
 
         similar_movies = []
         actors = [] 
-        for i in range(10):
-            similar_movies.append(similar_items[i])
-            actors.append(movie_credit[i])
+        if len(similar_items)>1 and len(movie_credit)> 1:
+            for i in range(10):
+                similar_movies.append(similar_items[i])
+                actors.append(movie_credit[i])
 
-    
+        print(similar_movies,'뭐냣ㅂ')
+        print(actors,'fdsfsdfdsds뭐냣ㅂ')
         context = {
             'movie':movie,
             'similar_movies':similar_movies,
@@ -183,13 +185,14 @@ def movie_list(request, genre_id):
 
 
 def movie_search(request):
-    movie_name = request.GET.get('movie_name', '')
-    genre_movies = Movie.objects.filter(title__contains=movie_name)
-    paginator = Paginator(genre_movies, 10)
+    movie_name = request.GET.get('movie_name')
+    search_movies = Movie.objects.filter(title__contains=movie_name)
+    paginator = Paginator(search_movies, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
+    print(search_movies,'알ㄴ리ㅓ닝ㅊ')
     context = {
-        'genre_movies': genre_movies,
+        'search_movies': search_movies,
         'page_obj': page_obj,
     }
     return render(request, 'movies/movie_list.html', context)
