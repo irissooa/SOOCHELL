@@ -4,7 +4,7 @@ from django.db.models import Count
 from django.contrib.auth import get_user_model
 from django.http import JsonResponse
 from django.core.paginator import Paginator
-from accounts.forms import GenreChoiceForm
+# from accounts.forms import GenreChoiceForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from datetime import date, timedelta
@@ -106,7 +106,7 @@ def index(request):
 
 #출연진 추가, 리뷰톡톡 추가..
 def movie_detail(request, movie_pk):
-    movie = get_object_or_404(Movie, pk=movie_pk)
+    movie = get_object_or_404(Movie, movie_id=movie_pk)
     movie_id = movie.movie_id
     User = get_user_model()
 
@@ -123,7 +123,7 @@ def movie_detail(request, movie_pk):
         res = requests.get(URL, params = params)
 
         similar_items = res.json()['results']
-        print('similaㅇ린어링넟ㄹ',similar_items)
+
         #출연진
         URL_2 = f'https://api.themoviedb.org/3/movie/{movie_id}/credits'
         res_2 = requests.get(URL_2,params=params)
@@ -137,8 +137,6 @@ def movie_detail(request, movie_pk):
                 similar_movies.append(similar_items[i])
                 actors.append(movie_credit[i])
 
-        print(similar_movies,'뭐냣ㅂ')
-        print(actors,'fdsfsdfdsds뭐냣ㅂ')
         context = {
             'movie':movie,
             'similar_movies':similar_movies,
