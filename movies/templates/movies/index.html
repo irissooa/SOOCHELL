@@ -5,14 +5,14 @@
   <div class="mb-2 mt-4">
     <h3><strong>비슷한 영화 추천</strong></h3>
   </div>
-  <div id="carouselExampleControls1" class="carousel slide" data-ride="carousel" data-interval="5000">
+  <div id="carouselExampleControls1" class="carousel slide" data-ride="carousel" data-interval="2500">
     <div class="carousel-inner">
       <div class="carousel-item active">
         <div class="row justify-content-center ml-0 mr-0">
         {% for similar_movie in similar_movies1 %}
           <div class="col-2">
             <a href="{% url 'movies:movie_detail' similar_movie.id %}">
-              <img src="https://image.tmdb.org/t/p/original/{{ similar_movie.poster_path }}" class="d-block w-100" style="height: 180px" alt="{{ similar_movie.title }}">
+              <img src="https://image.tmdb.org/t/p/original/{{ similar_movie.poster_path }}" class="d-block w-100" style=100% alt="{{ similar_movie.title }}">
             </a>
           </div>
         {% endfor %}
@@ -23,7 +23,7 @@
         {% for similar_movie in similar_movies2 %}
           <div class="col-2">
             <a href="{% url 'movies:movie_detail' similar_movie.id %}">
-              <img src="https://image.tmdb.org/t/p/original/{{ similar_movie.poster_path }}" class="d-block w-100" style="height: 180px" alt="{{ similar_movie.title }}">
+              <img src="https://image.tmdb.org/t/p/original/{{ similar_movie.poster_path }}" class="d-block w-100" style=100% alt="{{ similar_movie.title }}">
             </a>
           </div>
         {% endfor %}
@@ -42,14 +42,14 @@
   <div class="mb-2 mt-4">
     <h3><strong>좋아요 누른 영화 보여주기</strong></h3>
   </div>
-  <div id="carouselExampleControls2" class="carousel slide" data-ride="carousel" data-interval="5000">
+  <div id="carouselExampleControls2" class="carousel slide" data-ride="carousel" data-interval="2500">
     <div class="carousel-inner" >
       <div class="carousel-item active">
         <div class="row justify-content-center ml-0 mr-0">
         {% for weekly_recommend in weekly_recommends1 %}
           <div class="col-2">
             <a href="{% url 'movies:movie_detail' weekly_recommend.id %}">
-              <img src="https://image.tmdb.org/t/p/original/{{ weekly_recommend.poster_path }}" class="d-block w-100" style="height: 180px" alt="{{ weekly_recommend.title }}">
+              <img src="https://image.tmdb.org/t/p/original/{{ weekly_recommend.poster_path }}" class="d-block w-100" style=100% alt="{{ weekly_recommend.title }}">
             </a>
           </div>
         {% endfor %}
@@ -60,7 +60,7 @@
         {% for weekly_recommend in weekly_recommends2 %}
           <div class="col-2">
             <a href="{% url 'movies:movie_detail' weekly_recommend.id %}">
-              <img src="https://image.tmdb.org/t/p/original/{{ weekly_recommend.poster_path }}" class="d-block w-100" style="height: 180px" alt="{{ weekly_recommend.title }}">
+              <img src="https://image.tmdb.org/t/p/original/{{ weekly_recommend.poster_path }}" class="d-block w-100" style=100% alt="{{ weekly_recommend.title }}">
             </a>
           </div>
         {% endfor %}
@@ -79,14 +79,14 @@
   <div class="mb-2 mt-4">
     <h3><strong>우리의 추천 영화 보여주기</strong></h3>
   </div>
-  <div id="carouselExampleControls2" class="carousel slide" data-ride="carousel" data-interval="5000">
+  <div id="carouselExampleControls2" class="carousel slide" data-ride="carousel" data-interval="2500">
     <div class="carousel-inner" >
       <div class="carousel-item active">
         <div class="row justify-content-center ml-0 mr-0">
         {% for recommended_movie in recommended_movies1 %}
           <div class="col-2">
             <a href="{% url 'movies:movie_detail' recommended_movie.id %}">
-              <img src="https://image.tmdb.org/t/p/original/{{ recommended_movie.poster_path }}" class="d-block w-100" style="height: 180px" alt="{{ recommended_movie.title }}">
+              <img src="https://image.tmdb.org/t/p/original/{{ recommended_movie.poster_path }}" class="d-block w-100" style=100% alt="{{ recommended_movie.title }}">
             </a>
           </div>
         {% endfor %}
@@ -97,7 +97,7 @@
         {% for recommended_movie in recommended_movies2 %}
           <div class="col-2">
             <a href="{% url 'movies:movie_detail' recommended_movie.id %}">
-              <img src="https://image.tmdb.org/t/p/original/{{ recommended_movie.poster_path }}" class="d-block w-100" style="height: 180px" alt="{{ recommended_movie.title }}">
+              <img src="https://image.tmdb.org/t/p/original/{{ recommended_movie.poster_path }}" class="d-block w-100" style=100% alt="{{ recommended_movie.title }}">
             </a>
           </div>
         {% endfor %}
@@ -132,7 +132,7 @@
         {% for recommend_movie in recommend_movies_genre1 %}
           <div class="col-2">
             <a href="{% url 'movies:movie_detail' recommend_movie.id %}">
-              <img src="https://image.tmdb.org/t/p/original/{{ recommend_movie.poster_path }}" class="d-block w-100" style="height: 180px" alt="{{ recommend_movie.movie.movie.title }}">
+              <img src="https://image.tmdb.org/t/p/original/{{ recommend_movie.poster_path }}" class="d-block w-100" style=100% alt="{{ recommend_movie.movie.movie.title }}">
             </a>
           </div>
         {% endfor %}
@@ -143,7 +143,7 @@
         {% for recommend_movie in recommend_movies_genre2 %}
           <div class="col-2">
             <a href="{% url 'movies:movie_detail' recommend_movie.id %}">
-              <img src="https://image.tmdb.org/t/p/original/{{ recommend_movie.poster_path }}" class="d-block w-100" style="height: 180px" alt="{{ recommend_movie.movie.title }}">
+              <img src="https://image.tmdb.org/t/p/original/{{ recommend_movie.poster_path }}" class="d-block w-100" style=100% alt="{{ recommend_movie.movie.title }}">
             </a>
           </div>
         {% endfor %}

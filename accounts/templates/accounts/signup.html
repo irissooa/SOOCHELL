@@ -14,7 +14,11 @@
           <div class="carousel-item active" style="background-image: url({% static 'accounts/images/rong.jpg' %})">
             <div class="carousel-container">
               <div class="container">
+               {% if user.is_authenticated %}
+                <h2 class="animate__animated animate__fadeInDown">Hello, {{ user.username }}</h2>
+                {% else %}
                 <h2 class="animate__animated animate__fadeInDown">Welcome to <span>SOOCHELL's MOVIE</span></h2>
+                {% endif %}
                 <p class="animate__animated animate__fadeInUp">Ut velit est quam dolor ad a aliquid qui aliquid. Sequi ea ut et est quaerat sequi nihil ut aliquam. Occaecati alias dolorem mollitia ut. Similique ea voluptatem. Esse doloremque accusamus repellendus deleniti vel. Minus et tempore modi architecto.</p>
                 {% comment %} signup으로 옮겨감 {% endcomment %}
                 {% if user.is_authenticated %}

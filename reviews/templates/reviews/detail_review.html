@@ -60,18 +60,19 @@
                 </form>
               </div>
               {% endif %}
+              <a href="{% url 'reviews:index' %}" class="btn btn-dark ">BACK</a>
             </article><!-- End blog entry -->
 
             <div class="blog-comments">
               {% comment %} 댓글 개수? {% endcomment %}
-              <h4 class="comments-count">{{comments.count}}</h4>
+              <h4 class="comments-count">{{comments.count}} Comments</h4>
                 {% if request.user.is_authenticated %}
                   <div class='d-flex justify-content-between mt-4'>
                     <form action="{% url 'reviews:create_comment' review.pk %}" method="POST">
                         {% csrf_token %}
                           <p class="mb-1">Comment : {% bootstrap_form comment_form %} <button class='ml-2 btn btn-primary btn-sm'><i class="fas fa-plus-circle"></i></button></p>
                     </form>
-                    <a href="{% url 'reviews:index' %}" class="btn btn-dark ">BACK</a>
+                  
                   </div>
                 {% endif %}
                 <br>
@@ -83,23 +84,13 @@
                     <p>
                       {{ comment.content }}
                     </p>
-                    {% if comment.user == request.user %}
+                    {% comment %} {% if comment.user == request.user %}
                     <a href="{% url 'reviews:update_comment' review.pk comment.pk %}" class="btn btn-warning btn-sm " alt="Modify"><i class="far fa-edit"></i></a>
                     <form action="{% url 'reviews:delete_comment' review.pk comment.pk %}" method="POST">
                     {% csrf_token %}
                     <button class='btn btn-danger btn-sm mr-1'><i class="far fa-trash-alt"></i></button>
                     </form>
-                    {% endif %}
-                    {% if request.resolver_match.url_name == 'update_comment' %}
-                      {% if comment.pk == comment_pk %}
-                        <p class='p-1'>↑</p>
-                          <form action="{% url 'reviews:update_comment' review.pk comment.pk%}" method="POST">
-                              {% csrf_token %}
-                              <p class='p-1'>{% bootstrap_form update_form.as_p %}</p>
-                              <p class='p-1'><button class='btn btn-primary btn-sm'>Modify</button></p>
-                          </form>
-                      {% endif %}
-                    {% endif %}
+                    {% endif %} {% endcomment %}
                 {% endfor %}
             </div><!-- End comment #1 -->
           </div><!-- End blog comments -->

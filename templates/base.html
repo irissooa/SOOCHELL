@@ -41,8 +41,8 @@
 <body>
   <!-- ======= Header ======= -->
     <header id="header" class="sticky-top">
-      <div class="container d-flex align-items-center">
-        <h1 class="logo"><a href="{% url 'accounts:signup' %}">SOOCHELL</a></h1>
+      <div class="d-flex align-items-center justify-content-between">
+        <h1 class="logo ml-5"><a href="{% url 'accounts:signup' %}">SOOCHELL</a></h1>
 
         <nav class="nav-menu d-none d-lg-block">
         <!-- Uncomment below if you prefer to use an image logo -->
@@ -58,9 +58,9 @@
             <li>
               <a href="{% url 'accounts:logout' %}">Logout</a>
             </li>
-            <li>
+            {% comment %} <li>
               <a>Hello, {{ user.username }}</a>
-            </li>
+            </li> {% endcomment %}
             {% else %}
             <li>
               <a href="{% url 'accounts:login' %}">Login</a>
@@ -71,7 +71,7 @@
             {% endif %}
               <li>
             <form action="{% url 'movies:movie_search' %}" class="form-inline my-2 my-lg-0">
-              <input id="searchbar" class="form-control mr-sm-2 bg-dark text-light" type="search" placeholder="Search" aria-label="Search" name="movie_name" value="{{ movie_name }}">
+              <input id="searchbar" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="movie_name" value="{{ movie_name }}">
               <button class="btn btn-outline-success my-2 my-sm-0 mr-2" type="submit">Search</button>
             </form>
             </li>
@@ -102,11 +102,11 @@
                 <strong>Email:</strong> info@example.com<br>
               </p>
               <div class="social-links mt-3">
-                <a href="#" class="twitter"><i class="bx bxl-twitter"></i></a>
-                <a href="#" class="facebook"><i class="bx bxl-facebook"></i></a>
-                <a href="#" class="instagram"><i class="bx bxl-instagram"></i></a>
-                <a href="#" class="google-plus"><i class="bx bxl-skype"></i></a>
-                <a href="#" class="linkedin"><i class="bx bxl-linkedin"></i></a>
+                <a href="https://twitter.com/" class="twitter"><i class="bx bxl-twitter"></i></a>
+                <a href="https://facebook.com/" class="facebook"><i class="bx bxl-facebook"></i></a>
+                <a href="https://www.instagram.com/" class="instagram"><i class="bx bxl-instagram"></i></a>
+                <a href="https://skype.daesung.com/main.asp" class="google-plus"><i class="bx bxl-skype"></i></a>
+                <a href="https://linkedin.com/" class="linkedin"><i class="bx bxl-linkedin"></i></a>
               </div>
             </div>
           </div>

@@ -400,10 +400,16 @@ const token = localStorage.getItem('jwt')
 
 ![image-20201125215909103](README.assets/image-20201125215909103.png)
 
-이건 또 무슨...색다른 에러일까....
+이건 또 무슨...색다른 에러일까...
+
+안되다가...갑자기 된다,,,ㅎ
 
 
 
-detail credit 필드들 전부 가져오게 바꾸기
+### QueryDict에서 값가져오기
 
-movie like에 m1만 지우지 말고 movie.like도 지워야되지 않을까?
+회원가입을 할때 user가 genre들을 여러개 선택한 뒤, 그 genre의 id값을 넣어주고 싶은데 form의 data인 reques.POST를 찍어보니 QueryDict다! 회원가입을 했을때 genre fields에 값은 들어있는데 그걸 가져오는걸 어떻게 할지 몰라 찾아보니 `querydict.getlist('필드명')`로 가져올수 있었다!
+
+
+
+![image-20201126032701863](README.assets/image-20201126032701863.png)

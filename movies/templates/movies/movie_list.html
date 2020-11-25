@@ -8,27 +8,27 @@
       <img src="https://image.tmdb.org/t/p/w342/{{ search_movie.poster_path }}" class="card-img-top mt-2" style="height:350px" alt="...">
       <div class="card-body">
         <h5 class="card-title"><strong>{{ search_movie.title }}</strong></h5>
-        <form class="like-form" data-movie-id='{{search_movie.pk}}'>
+        <form class="like-form" data-movie-id='{{search_movie.movie_id}}'>
           {% csrf_token %}
           {% if user in search_movie.liker.all %}
           <li class="d-flex align-items-center">
             <button class="btn btn-link">
-              <i id='like-btn-{{search_movie.pk}}' class="fas fa-heart fa-lg" style="color:crimson;"></i>
+              <i id='like-btn-{{search_movie.movie_id}}' class="fas fa-heart fa-lg" style="color:crimson;"></i>
             </button>
           </li>
           {% else %}
           <li class="d-flex align-items-center">
             <button class="btn btn-link">
-              <i id='like-btn-{{search_movie.pk}}' class="fas fa-heart fa-lg" style="color:gray;"></i>
+              <i id='like-btn-{{search_movie.movie_id}}' class="fas fa-heart fa-lg" style="color:gray;"></i>
             </button>
           </li>
           {% endif %}
         </form>
         <li class="d-flex align-items-center">
-        <span id = 'like-count-{{search_movie.pk}}'>{{ search_movie.liker.all|length }} </span>Likes<br>
+        <span id = 'like-count-{{search_movie.movie_id}}'>{{ search_movie.liker.all|length }} </span>Likes<br>
         </li>
         <div class="text-right">
-          <a href="{% url 'movies:movie_detail' search_movie.pk %}" class="btn btn-dark">Movie's Detail</a>
+          <a href="{% url 'movies:movie_detail' search_movie.movie_id %}" class="btn btn-dark">Movie's Detail</a>
         </div>
       </div>
     </div>
