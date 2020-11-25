@@ -3,16 +3,16 @@
 
 {% block content %}
   <div class="mb-2 mt-4">
-    <h3 class="text-light"><strong>너가 눌렀던 영화</strong></h3>
+    <h3><strong>비슷한 영화 추천</strong></h3>
   </div>
   <div id="carouselExampleControls1" class="carousel slide" data-ride="carousel" data-interval="5000">
-    <div class="carousel-inner" >
+    <div class="carousel-inner">
       <div class="carousel-item active">
         <div class="row justify-content-center ml-0 mr-0">
-        {% for recommend_movie in recommend_movies_days1 %}
+        {% for similar_movie in similar_movies1 %}
           <div class="col-2">
-            <a href="{% url 'movies:movie_detail' recommend_movie.id %}">
-              <img src="https://image.tmdb.org/t/p/original/{{ recommend_movie.poster_path }}" class="d-block w-100" style="height: 180px" alt="{{ recommend_movie.movie.movie.title }}">
+            <a href="{% url 'movies:movie_detail' similar_movie.id %}">
+              <img src="https://image.tmdb.org/t/p/original/{{ similar_movie.poster_path }}" class="d-block w-100" style="height: 180px" alt="{{ similar_movie.title }}">
             </a>
           </div>
         {% endfor %}
@@ -20,10 +20,10 @@
       </div>
       <div class="carousel-item">
         <div class="row justify-content-center ml-0 mr-0">
-        {% for recommend_movie in recommend_movies_days2 %}
+        {% for similar_movie in similar_movies2 %}
           <div class="col-2">
-            <a href="{% url 'movies:movie_detail' recommend_movie.id %}">
-              <img src="https://image.tmdb.org/t/p/original/{{ recommend_movie.poster_path }}" class="d-block w-100" style="height: 180px" alt="{{ recommend_movie.movie.title }}">
+            <a href="{% url 'movies:movie_detail' similar_movie.id %}">
+              <img src="https://image.tmdb.org/t/p/original/{{ similar_movie.poster_path }}" class="d-block w-100" style="height: 180px" alt="{{ similar_movie.title }}">
             </a>
           </div>
         {% endfor %}
@@ -40,16 +40,16 @@
     </a>
   </div>
   <div class="mb-2 mt-4">
-    <h3 class="text-light"><strong>지난 달 인기 영화</strong></h3>
+    <h3><strong>좋아요 누른 영화 보여주기</strong></h3>
   </div>
   <div id="carouselExampleControls2" class="carousel slide" data-ride="carousel" data-interval="5000">
     <div class="carousel-inner" >
       <div class="carousel-item active">
         <div class="row justify-content-center ml-0 mr-0">
-        {% for recommend_movie in recommend_movies_month1 %}
+        {% for weekly_recommend in weekly_recommends1 %}
           <div class="col-2">
-            <a href="{% url 'movies:movie_detail' recommend_movie.id %}">
-              <img src="https://image.tmdb.org/t/p/original/{{ recommend_movie.poster_path }}" class="d-block w-100" style="height: 180px" alt="{{ recommend_movie.movie.movie.title }}">
+            <a href="{% url 'movies:movie_detail' weekly_recommend.id %}">
+              <img src="https://image.tmdb.org/t/p/original/{{ weekly_recommend.poster_path }}" class="d-block w-100" style="height: 180px" alt="{{ weekly_recommend.title }}">
             </a>
           </div>
         {% endfor %}
@@ -57,10 +57,47 @@
       </div>
       <div class="carousel-item">
         <div class="row justify-content-center ml-0 mr-0">
-        {% for recommend_movie in recommend_movies_month2 %}
+        {% for weekly_recommend in weekly_recommends2 %}
           <div class="col-2">
-            <a href="{% url 'movies:movie_detail' recommend_movie.id %}">
-              <img src="https://image.tmdb.org/t/p/original/{{ recommend_movie.poster_path }}" class="d-block w-100" style="height: 180px" alt="{{ recommend_movie.movie.title }}">
+            <a href="{% url 'movies:movie_detail' weekly_recommend.id %}">
+              <img src="https://image.tmdb.org/t/p/original/{{ weekly_recommend.poster_path }}" class="d-block w-100" style="height: 180px" alt="{{ weekly_recommend.title }}">
+            </a>
+          </div>
+        {% endfor %}
+        </div>
+      </div>
+    </div>
+    <a class="carousel-control-prev" style="width:25px" href="#carouselExampleControls2" role="button" data-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="sr-only">Previous</span>
+    </a>
+    <a class="carousel-control-next" style="width:25px" href="#carouselExampleControls2" role="button" data-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="sr-only">Next</span>
+    </a>
+  </div>
+  <div class="mb-2 mt-4">
+    <h3><strong>우리의 추천 영화 보여주기</strong></h3>
+  </div>
+  <div id="carouselExampleControls2" class="carousel slide" data-ride="carousel" data-interval="5000">
+    <div class="carousel-inner" >
+      <div class="carousel-item active">
+        <div class="row justify-content-center ml-0 mr-0">
+        {% for recommended_movie in recommended_movies1 %}
+          <div class="col-2">
+            <a href="{% url 'movies:movie_detail' recommended_movie.id %}">
+              <img src="https://image.tmdb.org/t/p/original/{{ recommended_movie.poster_path }}" class="d-block w-100" style="height: 180px" alt="{{ recommended_movie.title }}">
+            </a>
+          </div>
+        {% endfor %}
+        </div>
+      </div>
+      <div class="carousel-item">
+        <div class="row justify-content-center ml-0 mr-0">
+        {% for recommended_movie in recommended_movies2 %}
+          <div class="col-2">
+            <a href="{% url 'movies:movie_detail' recommended_movie.id %}">
+              <img src="https://image.tmdb.org/t/p/original/{{ recommended_movie.poster_path }}" class="d-block w-100" style="height: 180px" alt="{{ recommended_movie.title }}">
             </a>
           </div>
         {% endfor %}
@@ -82,13 +119,13 @@
   {% if user.is_authenticated %}
   {% if request.user.genre.all|length %}
   <h3 class="text-light">
-    <strong>회원님이 좋아하실만한 영화</strong>
+    <strong>유저가 좋아요한 장르별 추천영황</strong>
     <span>
-      <button type="button" class="ml-1 border-0 btn btn-outline-dark text-warning" data-toggle="modal" data-target="#exampleModal"><strong>장르 변경</strong></button>
+      <button type="button" class="ml-1 border-0 btn btn-outline-dark text-warning" data-toggle="modal" data-target="#exampleModal"><strong>Change Genres</strong></button>
     </span>
   </h3>
 
-  <div id="carouselExampleControls3" class="carousel slide" data-ride="carousel" data-interval="5000">
+  {% comment %} <div id="carouselExampleControls3" class="carousel slide" data-ride="carousel" data-interval="5000">
     <div class="carousel-inner" >
       <div class="carousel-item active">
         <div class="row justify-content-center ml-0 mr-0">
@@ -143,9 +180,9 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> {% endcomment %}
   {% else %}
-  <h3 class="text-light"><strong>회원님이 좋아하실만한 영화</strong></h3>
+  <h3 class="text-light"><strong>장르별추천</strong></h3>
   <div class='border'>
     <div class='m-4 text-center'>
       <h4 class="text-light">선택된 장르가 없어요 장르를 선택해주세요</h4>
@@ -165,14 +202,14 @@
             </button>
           </div>
           <div class="modal-body">
-            <form action="{% url 'movies:genre_choice' %}" method='POST'>
+            {% comment %} <form action="{% url 'movies:genre_choice' %}" method='POST'>
                 {% csrf_token %}
                 {% bootstrap_form form %}
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
                 <button type="submit" class="btn btn-primary">적용</button>
               </div>
-            </form>
+            </form> {% endcomment %}
           </div>
         </div>
       </div>
