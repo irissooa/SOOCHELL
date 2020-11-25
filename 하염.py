@@ -33,7 +33,7 @@ URL = 'https://api.themoviedb.org/3/movie/popular'
 
 pk=1
 result = []
-for p in range(1,501):
+for p in range(1,201):
     params = {'api_key':API_KEY,'language':language}
     data = {'page':p}
     res = requests.post(URL,params=params,data=data)
@@ -73,5 +73,5 @@ for p in range(1,501):
 #     print(x)
 #파일만들기
 
-with open('moviesfinally.json', 'w', encoding='utf-8') as make_file:
+with open('movies201.json', 'w', encoding='utf-8') as make_file:
     json.dump(result, make_file, ensure_ascii=False, indent='\t')
