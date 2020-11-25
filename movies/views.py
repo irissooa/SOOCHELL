@@ -12,8 +12,8 @@ from django.views.decorators.http import require_POST
 import requests
 import json
 
-def home(request):
-    return render(request,'movies/home.html')
+# def home(request):
+#     return render(request,'movies/home.html')
 
 # Create your views here.
 def genre_choice(request):

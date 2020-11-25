@@ -50,3 +50,4 @@ def logout(request):
     auth_logout(request)
      # 어디로 갈지 수정해야함
     return redirect('movies:index')
+

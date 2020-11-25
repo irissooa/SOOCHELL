@@ -386,3 +386,9 @@ const token = localStorage.getItem('jwt')
 
 
 
+------------
+
+## Django로 바꿈,,,,
+
+### static
+
