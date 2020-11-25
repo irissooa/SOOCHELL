@@ -65,6 +65,7 @@
               </div>
             
             </article><!-- End blog entry -->
+            <h3><strong>유사한영화추천</strong></h3>
             {% comment %} 유사한 영화 {% endcomment %}
             <div class="row mt-4">
             {% for similar_movie in similar_movies %}
@@ -100,7 +101,7 @@
 
             <div class="sidebar">
               <!-- 영화 출연진들 보이기 -> 이거도 각 컴포넌트로 만들어서 돌려야되나? ㅎ-->
-              <h3 class="sidebar-title">출연진</h3>
+              <h3 class="sidebar-title">Credits</h3>
               {% for actor in actors %}
                 <div class="sidebar-item recent-posts">
                   <div class="post-item clearfix">

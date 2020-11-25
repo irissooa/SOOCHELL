@@ -21,16 +21,16 @@ class CustomUserCreationForm(UserCreationForm):
         widget = forms.PasswordInput(attrs={"placeholde":"비밀번호 확인"})
     )
 
-    # genre = forms.ModelMultipleChoiceField(
-    #     label='좋아하는 장르를 선택해주세요',
-    #     queryset=Genre.objects.all(),
-    #     widget=forms.CheckboxSelectMultiple(),
-    #     required=False
-    #     )
+    genre = forms.ModelMultipleChoiceField(
+        label='좋아하는 장르를 선택해주세요',
+        queryset=Genre.objects.all(),
+        widget=forms.CheckboxSelectMultiple(),
+        required=False
+        )
 
     class Meta(UserCreationForm.Meta):
         model = User
-        fields = ['username','password1','password2']
+        fields = ['username','password1','password2','genre']
 
 
 class GenreChoiceForm(forms.ModelForm):
