@@ -8,7 +8,25 @@
       <img src="https://image.tmdb.org/t/p/w342/{{ genre_movie.poster_path }}" class="card-img-top mt-2" style="height:350px" alt="...">
       <div class="card-body">
         <h5 class="card-title"><strong>{{ genre_movie.title }}</strong></h5>
-        <p><i class="fas fa-heart" style="color: rgb(146, 0, 0);"></i><span class="ml-2">{{ genre_movie.like.count }}</span></p>
+        <form class="like-form" data-movie-id='{{movie.pk}}'>
+          {% csrf_token %}
+          {% if user in movie.liker.all %}
+          <li class="d-flex align-items-center">
+            <button class="btn btn-link">
+              <i id='like-btn-{{movie.pk}}' class="fas fa-heart fa-lg" style="color:crimson;"></i>
+            </button>
+          </li>
+          {% else %}
+          <li class="d-flex align-items-center">
+            <button class="btn btn-link">
+              <i id='like-btn-{{movie.pk}}' class="fas fa-heart fa-lg" style="color:gray;"></i>
+            </button>
+          </li>
+          {% endif %}
+        </form>
+        <li class="d-flex align-items-center">
+        <span id = 'like-count-{{movie.pk}}'>{{ movie.liker.all|length }} </span>Likes<br>
+        </li>
         <div class="text-right">
           <a href="{% url 'movies:movie_detail' genre_movie.pk %}" class="btn btn-dark">Movie's Detail</a>
         </div>
@@ -29,3 +47,33 @@
 </div>
 
 {% endblock %}
+{% block script %}
+<script>
+    const forms = document.querySelectorAll('.like-form')
+    const csrfTokenInput = document.querySelector('input[name="csrfmiddlewaretoken"]')
+    const csrftoken = csrfTokenInput.value
+    forms.forEach(form => {
+      //console.log(form,'들어왔니')
+      form.addEventListener('submit',(event)=>{
+        event.preventDefault()
+        const movieId = form.dataset.movieId
+        axios.post(`/movies/${movieId}/like/`,
+          {},
+          {headers: {'X-CSRFToken': csrftoken}}
+          )
+          // 응답을 인자로 넘겨줌!
+            .then((response)=>{
+              if (response.data.error === 'unauthorized') {
+                window.location.href = '/accounts/login/'
+              }
+              //응답오면 좋아요 표시 수정, 사람수 수정
+              const likeBtn = document.querySelector(`#like-btn-${movieId}`)
+              const likeCount = document.querySelector(`#like-count-${movieId}`)
+              likeBtn.style.color = response.data.liked ? 'crimson' : 'gray'
+              // 응답이 왔을 때 좋아요 표시 
+              likeCount.innerText = response.data.count
+          })
+      })
+    })
+</script>
+{% endblock script %}

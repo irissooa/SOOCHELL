@@ -147,7 +147,7 @@
           // 응답을 인자로 넘겨줌!
             .then((response)=>{
               if (response.data.error === 'unauthorized') {
-                window.location.href = '/acccounts/login/'
+                window.location.href = '/accounts/login/'
               }
               //응답오면 좋아요 표시 수정, 사람수 수정
               const likeBtn = document.querySelector(`#like-btn-${movieId}`)
