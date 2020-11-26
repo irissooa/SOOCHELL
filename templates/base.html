@@ -52,28 +52,28 @@
 
           <ul>
             {% comment %} <li class="active"><a href="{%url 'accounts:signup'%}">Home</a></li> {% endcomment %}
-            <li><a href="{% url 'movies:index' %}">Movies</a></li>
-            <li><a href="{% url 'reviews:index' %}">Community</a></li>
+            <li><a href="{% url 'movies:index' %}"><h4><i class="fas fa-film"> Movies</i></h4></a></li>
+            <li><a href="{% url 'reviews:index' %}"><h4><i class="fas fa-comments"> Community</i></h4></a></li>
 
             {% if user.is_authenticated %}
             <li>
-              <a href="{% url 'accounts:logout' %}">Logout</a>
+              <a href="{% url 'accounts:logout' %}"><h4><i class="fas fa-sign-out-alt"> Logout</i></h4></a>
             </li>
             {% comment %} <li>
               <a>Hello, {{ user.username }}</a>
             </li> {% endcomment %}
             {% else %}
             <li>
-              <a href="{% url 'accounts:login' %}">Login</a>
+              <a href="{% url 'accounts:login' %}"><h4><i class="fas fa-sign-in-alt"> Login</i></h4></a>
             </li>
             <li>
-              <a href="{% url 'accounts:signup' %}">Signup</a>
+              <a href="{% url 'accounts:signup' %}"><h4><i class="fas fa-user-alt"> Signup</i></h4></a>
             </li>
             {% endif %}
               <li>
             <form action="{% url 'movies:movie_search' %}" class="form-inline my-2 my-lg-0">
               <input id="searchbar" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="movie_name" value="{{ movie_name }}">
-              <button class="btn btn-outline-success my-2 my-sm-0 mr-2" type="submit">Search</button>
+              <button class="btn btn-outline-success my-2 my-sm-0 mr-2" type="submit"><i class="fas fa-search"></i></button>
             </form>
             </li>
           </ul>

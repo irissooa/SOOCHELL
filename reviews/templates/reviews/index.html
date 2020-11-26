@@ -51,9 +51,9 @@
               </div>
 
               <div class="entry-content">
-                <p>
+                {% comment %} <p>
                   {{review.content}}
-                </p>
+                </p> {% endcomment %}
                 <div class="read-more">
                   <a href="{% url 'reviews:detail_review' review.pk %}">Read More</a>
                 </div>
@@ -65,19 +65,19 @@
 
         </div>
 
-        <div class="blog-pagination" data-aos="fade-up">
+        {% comment %} <div class="blog-pagination" data-aos="fade-up">
           <ul class="justify-content-center">
             <li class="disabled"><i class="icofont-rounded-left"></i></li>
             <li><a href="#">1</a></li>
             <li class="active"><a href="#">2</a></li>
             <li><a href="#">3</a></li>4
             <li><a href="#"><i class="icofont-rounded-right"></i></a></li>
-          </ul>
-        </div>
+          </ul> {% endcomment %}
+        {% comment %} </div> {% endcomment %}
 
       </div>
     </section><!-- End Blog Section -->
-      <div class="text-center mt-2 mb-2" style="font-size:20px">
+      {% comment %} <div class="text-center mt-2 mb-2" style="font-size:20px">
       {% if per_page.has_previous %}
         <a href="?page={{ per_page.previous_page_number }}" class="btn btn-primary btn-sm mr-1">BEFORE</a>
       {% endif %}
@@ -87,7 +87,7 @@
       {% if per_page.has_next %}
         <a href="?page={{ per_page.next_page_number }}" class="btn btn-primary btn-sm ml-1">NEXT</a>
       {% endif %}
-      </div>
+      </div> {% endcomment %}
     </div>
   </main><!-- End #main -->
  
