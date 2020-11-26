@@ -21,6 +21,11 @@ def signup(request):
             return redirect('movies:index')
     else:
         form=CustomUserCreationForm()
+    
+    #오늘의 트렌딩 영화
+    
+    API_KEY='48bad6a2dc7df8164930b0ed851e6d37'
+    params = 
     context = {
         'form':form,
     }
