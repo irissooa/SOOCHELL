@@ -16,6 +16,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from accounts import views
+from movies import views as movieviews
+# from django.conf.urls import handler404, handler500, handler403, handler400
 
 
 urlpatterns = [
@@ -25,3 +27,6 @@ urlpatterns = [
     path('reviews/',include('reviews.urls')),
     path('movies/',include('movies.urls')),
 ]
+
+# handler404 = movieviews.handle_page_not_found404
+# handler500 = movieviews.handle_page_not_found500

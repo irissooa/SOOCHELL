@@ -55,9 +55,13 @@
               <div class="entry-content">
                 <blockquote>
                   <i class="icofont-quote-left quote-left"></i>
+                  {% if movie.overview %}
                   <p>
                     {{movie.overview}}  
                   </p>
+                  {% else %}
+                  <h4>Sorry, no overview :(</h4>
+                  {% endif %}
                   <i class="las la-quote-right quote-right"></i>
                   <i class="icofont-quote-right quote-right"></i>
                 </blockquote>
@@ -78,25 +82,24 @@
             {% endfor %}
             </div><!-- End blog author bio -->
             </article><!-- End blog entry -->
-            <h3><strong>비슷한 영화를 원하시나요?</strong></h3>
             {% comment %} 유사한 영화 {% endcomment %}
       
+            <h3 class="ml-3"><strong>{{movie.title}}과 비슷한 컨텐츠</strong></h3>
             <div class="row mt-4">
             {% for similar_movie in similar_movies %}
               <div class="card col-3">
                 <img src="https://image.tmdb.org/t/p/w342/{{similar_movie.poster_path }}" class="card-img-top mt-2" style="height:350px" alt="No Poster:(">
                 <div class="card-body">
                   <h5 class="card-title"><strong>{{similar_movie.title }}</strong></h5>
-
                   <div class="text-right">
                     <a href="{% url 'movies:movie_detail' similar_movie.id %}" class="btn btn-dark">Movie's Detail</a>
                   </div>
                 </div>
               </div>
               {% empty %}
-              <h4>Sorry, no Similar Movies :(</h4>
+              <h4 class="ml-5">Sorry, no Similar Movies :(</h4>
             {% endfor %}
-          </div>
+            </div>
 
           </div><!-- End blog entries list -->
 
@@ -126,8 +129,9 @@
               </div><!-- End sidebar recent posts-->
             </div><!-- End sidebar -->
           </div><!-- End blog sidebar -->
-        </div>
+        
       </div>
+    </div>
     </section><!-- End Blog Section -->
  
             

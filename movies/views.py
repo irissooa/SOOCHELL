@@ -12,18 +12,13 @@ from django.views.decorators.http import require_POST
 import requests
 import json
 
-from django.template import RequestContext
+# def handle_page_not_found404(request,exception):
+#     context = {}
+#     return render(request,'movies/sorry.html',context)
 
-# def error404(request):
-#     return render(request, "404.html", status=404)
-
-# def page_not_found(request):
-#     response = render_to_response('movies/404.html',{},context_instance=RequestContext(request))
-#     response.status_code=404
-#     return response
-
-# def error500(request):
-#     return render(request, "404.html", status=500)
+# def handle_page_not_found500(request):
+#     context = {}
+#     return render(request,'movies/sorry.html',context)
 
 # Create your views here.
 def genre_choice(request):
@@ -106,7 +101,6 @@ def index(request):
 #출연진 추가, 리뷰톡톡 추가..
 def movie_detail(request, movie_pk):
     movie = get_object_or_404(Movie, movie_id=movie_pk)
-    print('너는 뭐니',movie)
     movie_id = movie.movie_id
     User = get_user_model()
 
@@ -196,7 +190,6 @@ def movie_search(request):
     paginator = Paginator(search_movies, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    print(search_movies,'알ㄴ리ㅓ닝ㅊ')
     context = {
         'search_movies': search_movies,
         'page_obj': page_obj,
