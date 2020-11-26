@@ -10,7 +10,7 @@ class Review(models.Model):
         related_name='reviews',
         blank=True,
         null=True)
-    category = models.CharField(max_length=10)
+    
     title = models.CharField(max_length=100)
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
