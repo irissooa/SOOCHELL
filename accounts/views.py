@@ -17,13 +17,8 @@ def signup(request):
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
-            # user.save()
-            genre_user = request.POST.getlist('genre')
-            gform = GenreChoiceForm(genre_user,instance= request.user)
-            if gform.is_valid():
-                gform.save()
-                auth_login(request,user)
-                return redirect('movies:index')
+            auth_login(request,user)
+            return redirect('movies:index')
     else:
         form=CustomUserCreationForm()
     context = {

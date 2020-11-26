@@ -31,16 +31,21 @@ def index(request):
     movies = Movie.objects.all()
     today = date.today()
     sevendays = today - timedelta(days=1)
-    #movie_ids = LikeMovie.objects.filter(created_at__range=[sevendays,today]).values('movie_id').annotate(movie_count = Count('movie_id')).order_by('-movie_id')[::20]
-    movie_ids = LikeMovie.objects.filter(created_at__range=[sevendays,today]).values('movie_id')
+    # movie_ids = LikeMovie.objects.filter(created_at__range=[sevendays,today]).values('movie_id')
     
-    
+    user_pk = request.user.pk
+    user_movie = Movie.objects.filter(like=user_pk).values('movie_id')
+    print(user_movie,'유저가 좋아요한 무비들')
+    movie_ids=[]
+    for i in user_movie:
+        movie_ids.append(i.get('movie_id'))
+    print(movie_ids)
     #7일동안 좋아요한 영화보여주기
     weekly_recommends = []
     for i in movie_ids:
-        weekly_recommends.append(Movie.objects.get(id=i['movie_id']))
-
-    
+        weekly_recommends.append(Movie.objects.get(movie_id=i))
+        # weekly_recommends.append(Movie.objects.get(id=i['movie_id']))
+    print(weekly_recommends)
     #유저가 좋아요한 영화와 비슷한 영화 추천
     API_KEY='48bad6a2dc7df8164930b0ed851e6d37'
     language = 'ko-KR'
@@ -48,10 +53,10 @@ def index(request):
     
     movie_ids_api = []
     for i in movie_ids:
-        item=Movie.objects.filter(id=i['movie_id']).values()
-        print(item,'dd')
+        item=Movie.objects.filter(movie_id=i).values()
+        # print(item,'뭐니')
         movie_ids_api.append(item[0]['movie_id'])
-
+    print(movie_ids_api,'이건어아란ㅇㄹ')
     similar_movies = []
     for movie_id in movie_ids_api:
         URL=f'https://api.themoviedb.org/3/movie/{movie_id}/similar'
@@ -59,7 +64,7 @@ def index(request):
         res = requests.get(URL, params=params)
         similar_items = res.json()['results']
         if len(similar_items) > 1:
-            for i in range(20):
+            for i in range(len(similar_items)):
                 similar_movies.append(similar_items[i])
 
 
@@ -67,10 +72,10 @@ def index(request):
     recommended_movies = []
     for movie_id in movie_ids_api:
         URL_2 = f'https://api.themoviedb.org/3/movie/{movie_id}/recommendations'
-        res_2 = requests.get(URL,params=params)
+        res_2 = requests.get(URL_2,params=params)
         recommended_itmes = res_2.json()['results']
         if len(recommended_itmes) > 1:
-            for i in range(20):
+            for i in range(len(recommended_itmes)):
                 recommended_movies.append(recommended_itmes[i])
 
 
@@ -84,7 +89,8 @@ def index(request):
     #     recommend_movies_genre = recommend_movies_genre|Movie.objects.filter(genres__id=i)
     # recommend_movies2 = recommend_movies_genre.order_by('-vote_average').distinct()[:10]
     
-
+    # print('유사한영홧ㅂ',similar_movies)
+    # print('fjsdlfjasdlkcjasdlcf',recommended_movies)
     context = {
         # 'form':form,
         'genres': genres,
@@ -133,7 +139,8 @@ def movie_detail(request, movie_pk):
         similar_movies = []
         actors = [] 
         if len(similar_items)>1 and len(movie_credit)> 1:
-            for i in range(10):
+            result = min(len(similar_items),len(movie_credit))
+            for i in range(result):
                 similar_movies.append(similar_items[i])
                 actors.append(movie_credit[i])
 
@@ -152,15 +159,13 @@ def movie_detail(request, movie_pk):
 def movie_like(request, movie_pk):
     user = request.user
     movie = get_object_or_404(Movie, pk=movie_pk)
-
+    print(user.pk,movie.movie_id,'hㅑㅋㅋ')
     if movie.like.filter(pk=user.pk).exists():
-        m1 = LikeMovie.objects.filter(user=user).filter(movie=movie)
-        m1.delete()
-        liked = False
+        movie.like.remove(user)
+        liked=False
     else:
-        m1 = LikeMovie.objects.create(user=user,movie=movie)
-        liked = True
-
+        movie.like.add(user)
+        liked=True
     context = {
         'liked': liked,
         'count': movie.like.count(),

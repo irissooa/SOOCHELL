@@ -48,7 +48,7 @@
         <div class="row justify-content-center ml-0 mr-0">
         {% for weekly_recommend in weekly_recommends1 %}
           <div class="col-2">
-            <a href="{% url 'movies:movie_detail' weekly_recommend.id %}">
+            <a href="{% url 'movies:movie_detail' weekly_recommend.movie_id %}">
               <img src="https://image.tmdb.org/t/p/original/{{ weekly_recommend.poster_path }}" class="d-block w-100" style=100% alt="{{ weekly_recommend.title }}">
             </a>
           </div>
@@ -59,7 +59,7 @@
         <div class="row justify-content-center ml-0 mr-0">
         {% for weekly_recommend in weekly_recommends2 %}
           <div class="col-2">
-            <a href="{% url 'movies:movie_detail' weekly_recommend.id %}">
+            <a href="{% url 'movies:movie_detail' weekly_recommend.movie_id %}">
               <img src="https://image.tmdb.org/t/p/original/{{ weekly_recommend.poster_path }}" class="d-block w-100" style=100% alt="{{ weekly_recommend.title }}">
             </a>
           </div>

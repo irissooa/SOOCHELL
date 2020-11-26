@@ -30,24 +30,24 @@
               <div class="entry-meta">
                 <ul>
                   <li class="d-flex align-items-center"><i class="icofont-user"></i><strong>{{movie.vote_average}} / {{movie.vote_count}}</strong></li>
-                  <form class="like-form" data-movie-id='{{movie.movie_id}}'>
+                  <form class="like-form" data-movie-id='{{movie.pk}}'>
                     {% csrf_token %}
                     {% if user in movie.like.all %}
                     <li class="d-flex align-items-center">
                       <button class="btn btn-link">
-                        <i id='like-btn-{{movie.movie_id}}' class="fas fa-heart fa-lg" style="color:crimson;"></i>
+                        <i id='like-btn-{{movie.pk}}' class="fas fa-heart fa-lg" style="color:crimson;"></i>
                       </button>
                     </li>
                     {% else %}
                     <li class="d-flex align-items-center">
                       <button class="btn btn-link">
-                        <i id='like-btn-{{movie.movie_id}}' class="fas fa-heart fa-lg" style="color:gray;"></i>
+                        <i id='like-btn-{{movie.pk}}' class="fas fa-heart fa-lg" style="color:gray;"></i>
                       </button>
                     </li>
                     {% endif %}
                   </form>
                   <li class="d-flex align-items-center">
-                  <span id = 'like-count-{{movie.movie_id}}'>{{ movie.like.all|length }} </span>Likes<br>
+                  <span id = 'like-count-{{movie.pk}}'>{{ movie.like.all|length }} </span>Likes<br>
                   </li>
                 </ul>
               </div>

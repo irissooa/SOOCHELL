@@ -29,7 +29,7 @@ class Movie(models.Model):
 
 
 class LikeMovie(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='user_movie')
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
     created_at = models.DateField(auto_now_add=True)
 
