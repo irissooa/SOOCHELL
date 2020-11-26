@@ -121,7 +121,7 @@ def movie_detail(request, movie_pk):
 
         #리뷰
         URL_3 = f'ttps://api.themoviedb.org/3/movie/{movie_id}/reviews'
-        res_3 = request.get(URL_3,params=params)
+        res_3 = requests.get(URL_3,params=params)
 
         review_itmes = res_3.json['results']
 
