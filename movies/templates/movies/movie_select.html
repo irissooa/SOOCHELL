@@ -1,8 +1,10 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
 
-<h2 class="animate__animated animate__fadeInDown text-center"><strong>Choose Your Movie</strong></h2><br>
+<h2 class="animate__animated animate__fadeInDown text-center"><strong>{{request.user}}님! 좋아하는 컨텐츠를 선택하세요</strong></h2><br>
+<h5 class="animate__animated animate__fadeInDown text-center">정확한 분석을 위해서 영화를 5개 이상 선택해주세요</h5><br>
 <div class="row mt-4">
   {% for movie in movies %}
   <div class="card col-2">
@@ -28,8 +30,12 @@
       </div>
     </div>
   {% endfor %}
-  <div>
-    <a href="{% url 'movies:index' %}" class="btn btn-dark">Go Movie</a>
+  <div class="d-flex justify-content-end">
+  {% comment %} <div>이제 {{request.user}}님만의 영화를 보러가세요</div> {% endcomment %}
+    <a href="{% url 'movies:index' %}" >
+    <img src="{% static 'accounts/images/ticket2.png' %}" class="mt-5 ml-5"  width="500" alt="영화로가세욧">
+    </a>
+    
   </div>
 </div>
 

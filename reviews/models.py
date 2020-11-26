@@ -18,6 +18,9 @@ class Review(models.Model):
     liked = models.BooleanField(default=False)
     like_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like_reviews')
 
+    def __str__(self):
+        return self.title
+
 
 
 class Comment(models.Model):
@@ -27,3 +30,5 @@ class Comment(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def __str__(self):
+        return self.content

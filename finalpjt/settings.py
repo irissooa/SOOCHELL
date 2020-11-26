@@ -28,7 +28,7 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 # DEBUG = False
-# ALLOWED_HOSTS = ['http://127.0.0.1/']
+# ALLOWED_HOSTS = ['*']
 
 
 

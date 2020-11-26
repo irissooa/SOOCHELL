@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+{% comment %} <div class='container w-10' style="background-image: url({% static 'sorry.png' %})"> {% endcomment %}
+<div class="container">
+<img src="{% static 'accounts/images/sorry.jpg' %}" />
+<img src="{% static 'images/sorry.png' %}" />
+<h3>해당 페이지는 찾을 수 없습니당...BACK을 눌러주세요:( </h3>
+<div class="text-right">
+  <a href="{% url 'movies:index' %}" class="btn btn-dark">BACK</a>
+</div>
+</div>
+{% comment %} </div> {% endcomment %}
+{% endblock content %}
