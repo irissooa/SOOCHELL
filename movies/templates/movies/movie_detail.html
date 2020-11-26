@@ -67,28 +67,24 @@
             <h3><strong>Review</strong></h3>
             <div class="blog-author clearfix">
             {% for review in movie_reviews %}
-<<<<<<< HEAD
  
-=======
->>>>>>> 4fd0220a1efc7b6757f3cb553e0380ead0c12cf5
               {% comment %} <img src="assets/img/blog-author.jpg" class="rounded-circle float-left" alt=""> {% endcomment %}
               <h4>{{review.author}}</h4>
               <p>
                 {{review.content}}
               </p>
+              {% empty %}
+              <h4>Sorry, no reviews :(</h4>
             {% endfor %}
             </div><!-- End blog author bio -->
-<<<<<<< HEAD
             </article><!-- End blog entry -->
-=======
->>>>>>> 4fd0220a1efc7b6757f3cb553e0380ead0c12cf5
             <h3><strong>유사한영화추천</strong></h3>
             {% comment %} 유사한 영화 {% endcomment %}
       
             <div class="row mt-4">
             {% for similar_movie in similar_movies %}
               <div class="card col-3">
-                <img src="https://image.tmdb.org/t/p/w342/{{similar_movie.poster_path }}" class="card-img-top mt-2" style="height:350px" alt="...">
+                <img src="https://image.tmdb.org/t/p/w342/{{similar_movie.poster_path }}" class="card-img-top mt-2" style="height:350px" alt="No Poster:(">
                 <div class="card-body">
                   <h5 class="card-title"><strong>{{similar_movie.title }}</strong></h5>
 
@@ -110,7 +106,7 @@
               {% for actor in actors %}
                 <div class="sidebar-item recent-posts">
                   <div class="post-item clearfix">
-                    <img src="https://image.tmdb.org/t/p/w342/{{ actor.profile_path }}" alt="">
+                    <img src="https://image.tmdb.org/t/p/w342/{{ actor.profile_path }}" alt="No Photo:(">
                     <h4><p>{{actor.name}}</p></h4>
                     {% comment %} <time datetime="2020-01-01">Jan 1, 2020</time> {% endcomment %}
                   </div>
