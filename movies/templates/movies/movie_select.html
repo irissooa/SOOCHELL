@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2 class="animate__animated animate__fadeInDown text-center"><strong>Choose Your Movie</strong></h2><br>
+<div class="row mt-4">
+  {% for movie in movies %}
+  <div class="card col-2">
+      <img src="https://image.tmdb.org/t/p/w342/{{ movie.poster_path }}" class="card-img-top mt-2 d-block" style=100% alt="...">
+      <div class="card-body">
+        <h5 class="card-title"><strong>{{ movie.title }}</strong></h5>
+        <form class="like-form" data-movie-id='{{movie.pk}}'>
+          {% csrf_token %}
+          {% if user in movie.liker.all %}
+          <li class="d-flex align-items-center">
+            <button class="btn btn-link">
+              <i id='like-btn-{{movie.pk}}' class="fas fa-heart fa-lg" style="color:crimson;"></i>
+            </button>
+          </li>
+          {% else %}
+          <li class="d-flex align-items-center">
+            <button class="btn btn-link">
+              <i id='like-btn-{{movie.pk}}' class="fas fa-heart fa-lg" style="color:gray;"></i>
+            </button>
+          </li>
+          {% endif %}
+        </form>
+      </div>
+    </div>
+  {% endfor %}
+  <div>
+    <a href="{% url 'movies:index' %}" class="btn btn-dark">Go Movie</a>
+  </div>
+</div>
+
+
+{% endblock %}
+{% block script %}
+<script>
+    const forms = document.querySelectorAll('.like-form')
+    const csrfTokenInput = document.querySelector('input[name="csrfmiddlewaretoken"]')
+    const csrftoken = csrfTokenInput.value
+    forms.forEach(form => {
+      //console.log(form,'들어왔니')
+      form.addEventListener('submit',(event)=>{
+        event.preventDefault()
+        const movieId = form.dataset.movieId
+        axios.post(`/movies/${movieId}/like/`,
+          {},
+          {headers: {'X-CSRFToken': csrftoken}}
+          )
+          // 응답을 인자로 넘겨줌!
+            .then((response)=>{
+              if (response.data.error === 'unauthorized') {
+                window.location.href = '/accounts/login/'
+              }
+              //응답오면 좋아요 표시 수정, 사람수 수정
+              const likeBtn = document.querySelector(`#like-btn-${movieId}`)
+              const likeCount = document.querySelector(`#like-count-${movieId}`)
+              likeBtn.style.color = response.data.liked ? 'crimson' : 'gray'
+              // 응답이 왔을 때 좋아요 표시 
+              likeCount.innerText = response.data.count
+          })
+      })
+    })
+</script>
+{% endblock script %}

@@ -19,7 +19,7 @@ def signup(request):
         if form.is_valid():
             user = form.save()
             auth_login(request,user)
-            return redirect('movies:index')
+            return redirect('movies:movie_select')
     else:
         form=CustomUserCreationForm()
     
@@ -33,7 +33,8 @@ def signup(request):
     trending_itmes = res.json()['results']
     context = {
         'form':form,
-        'trending_items':trending_itmes,
+        'trending_items1':trending_itmes[:6],
+        'trending_items2':trending_itmes[6:12],
     }
     return render(request,'accounts/signup.html',context)
 

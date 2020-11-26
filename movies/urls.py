@@ -1,6 +1,11 @@
 from django.urls import path
 from . import views
 
+# from django.conf.urls import patterns,url
+
+# handler404 = "movies.views.error404"
+# handler500 = "movies.views.error500"
+
 app_name = 'movies'
 
 urlpatterns = [

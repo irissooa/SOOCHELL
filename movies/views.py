@@ -12,8 +12,18 @@ from django.views.decorators.http import require_POST
 import requests
 import json
 
-# def home(request):
-#     return render(request,'movies/home.html')
+from django.template import RequestContext
+
+# def error404(request):
+#     return render(request, "404.html", status=404)
+
+# def page_not_found(request):
+#     response = render_to_response('movies/404.html',{},context_instance=RequestContext(request))
+#     response.status_code=404
+#     return response
+
+# def error500(request):
+#     return render(request, "404.html", status=500)
 
 # Create your views here.
 def genre_choice(request):
@@ -96,13 +106,12 @@ def index(request):
 #출연진 추가, 리뷰톡톡 추가..
 def movie_detail(request, movie_pk):
     movie = get_object_or_404(Movie, movie_id=movie_pk)
+    print('너는 뭐니',movie)
     movie_id = movie.movie_id
     User = get_user_model()
 
     if request.user.is_authenticated:
         user = get_object_or_404(User,username=request.user.username)
-
-        
         API_KEY='48bad6a2dc7df8164930b0ed851e6d37'
         language = 'ko-KR'
         params = {'api_key':API_KEY, 'language':language}

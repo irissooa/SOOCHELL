@@ -25,8 +25,11 @@ SECRET_KEY = '#kdasm%6z(y5=shajsb(&(vk)#a89p=7(eak)-3c@me21n@l8i'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
 ALLOWED_HOSTS = []
+
+# DEBUG = False
+# ALLOWED_HOSTS = ['http://127.0.0.1/']
+
 
 
 # Application definition
