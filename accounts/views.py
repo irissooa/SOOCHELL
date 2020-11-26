@@ -25,7 +25,7 @@ def signup(request):
     #오늘의 트렌딩 영화
     
     API_KEY='48bad6a2dc7df8164930b0ed851e6d37'
-    params = 
+    # params = 
     context = {
         'form':form,
     }
