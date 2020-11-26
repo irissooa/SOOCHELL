@@ -5,6 +5,7 @@ from .forms import CustomUserCreationForm, GenreChoiceForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login as auth_login, logout as auth_logout
 # from .forms import CustomUserCreationForm
+import requests
 
 
 # Create your views here.
@@ -23,11 +24,16 @@ def signup(request):
         form=CustomUserCreationForm()
     
     #오늘의 트렌딩 영화
-    
     API_KEY='48bad6a2dc7df8164930b0ed851e6d37'
-    # params = 
+    URL = 'https://api.themoviedb.org/3/trending/movie/day'
+    params = {'api_key':API_KEY}
+
+    res = requests.get(URL,params=params)
+
+    trending_itmes = res.json()['results']
     context = {
         'form':form,
+        'trending_items':trending_itmes,
     }
     return render(request,'accounts/signup.html',context)
 
@@ -55,5 +61,5 @@ def login(request):
 def logout(request):
     auth_logout(request)
      # 어디로 갈지 수정해야함
-    return redirect('movies:index')
+    return redirect('accounts:signup')
 
