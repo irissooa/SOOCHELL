@@ -84,13 +84,13 @@
                     <p>
                       {{ comment.content }}
                     </p>
-                    {% comment %} {% if comment.user == request.user %}
-                    <a href="{% url 'reviews:update_comment' review.pk comment.pk %}" class="btn btn-warning btn-sm " alt="Modify"><i class="far fa-edit"></i></a>
+                    {% if comment.user == request.user %}
+                    {% comment %} <a href="{% url 'reviews:update_comment' review.pk comment.pk %}" class="btn btn-warning btn-sm " alt="Modify"><i class="far fa-edit"></i></a> {% endcomment %}
                     <form action="{% url 'reviews:delete_comment' review.pk comment.pk %}" method="POST">
                     {% csrf_token %}
                     <button class='btn btn-danger btn-sm mr-1'><i class="far fa-trash-alt"></i></button>
                     </form>
-                    {% endif %} {% endcomment %}
+                    {% endif %}
                 {% endfor %}
             </div><!-- End comment #1 -->
           </div><!-- End blog comments -->

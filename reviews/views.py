@@ -59,42 +59,51 @@ def detail_review(request, review_pk):
 @login_required
 def update_review(request, review_pk):
     review = get_object_or_404(Review, pk=review_pk)
-    if request.method == 'POST':
-        form = ReviewForm(request.POST, instance=review)
-        if form.is_valid():
-            form.save()
-            return redirect('reviews:detail_review', review.pk)
+    if request.use == review.user:
+        if request.method == 'POST':
+            form = ReviewForm(request.POST, instance=review)
+            if form.is_valid():
+                form.save()
+                return redirect('reviews:detail_review', review.pk)
+        else:
+            form = ReviewForm(instance=review)
     else:
-        form = ReviewForm(instance=review)
+        return redirect('reviews:index')
     context = {
         'form': form,
+        'review':review,
     }
     return render(request, 'reviews/form.html', context)
 
 
 
-@login_required
 @require_POST
 def delete_review(request, review_pk):
-    review = get_object_or_404(Review, pk=review_pk)
-    if request.user != review.user:
-        return redirect('reviews:detail_review', review.pk)
-    else:
-        review.delete()
-        return redirect('reviews:index')
-    
+    if request.user.is_authenticated:
+        review = get_object_or_404(Review, pk=review_pk)
+        if request.user == review.user:
+            review.delete()
+            return redirect('reviews:index')
+    return redirect('reviews:detail_review',review.pk)
 
-@login_required
+
 @require_POST
 def create_comment(request, review_pk):
-    review = get_object_or_404(Review, pk=review_pk)
-    form = CommentForm(request.POST)
-    if form.is_valid():
-        comment = form.save(commit=False)
-        comment.user = request.user
-        comment.review = review
-        comment.save()
-    return redirect('reviews:detail_review', review_pk)
+    if request.user.is_authenticated:
+        review = get_object_or_404(Review, pk=review_pk)
+        comment_form = CommentForm(request.POST)
+        if comment_form.is_valid():
+            comment = comment_form.save(commit=False)
+            comment.user = request.user
+            comment.review = review
+            comment.save()
+            return redirect('reviews:detail_review', review_pk)
+        context = {
+            'comment_form':comment_form,
+            'review':review,
+        }
+        return render(request,'reviews/detail_review.html',context)
+    return redirect('accounts:login')
 
 
 @login_required
@@ -103,33 +112,34 @@ def update_comment(request, review_pk, comment_pk):
     review = get_object_or_404(Review, pk=review_pk)
     if comment.user == request.user:
         if request.method == 'POST':
-            form = CommentForm(request.POST, instance=comment)
-            if form.is_valid():
-                comment = form.save(commit=False)
+            comment_form = CommentForm(request.POST, instance=comment)
+            if comment_form.is_valid():
+                comment = comment_form.save(commit=False)
                 comment.user = request.user
                 comment.review = review
                 comment.save()
-                return redirect('reviews:detail_review', comment.review.pk)
+                return redirect('reviews:detail_review', review.pk)
         else:
-            update_form = CommentForm(instance = comment)
+            comment_form = CommentForm(instance = comment)
             comments = review.comment_set.all()
-            context = {
-                'update_form':update_form,
-                'review':review,
-                'comments':comments,
-                'comment_pk':comment_pk
-            }
+        context = {
+            'comment_form':comment_form,
+            'review':review,
+            # 'comments':comments,
+            # 'comment_pk':comment_pk
+        }
         return render(request,'reviews/detail_review.html', context)
     else:
-        return redirect('reviews:detail_review', comment.review.pk)
+        return redirect('reviews:detail_review', review.pk)
     
 
 
-@login_required
 @require_POST
 def delete_comment(request, review_pk, comment_pk):
-    comment = get_object_or_404(Comment, pk=comment_pk)
-    comment.delete()
+    if request.user.is_authenticated:
+        comment = get_object_or_404(Comment, pk=comment_pk)
+        if request.user == comment.user:
+            comment.delete()
     return redirect('reviews:detail_review', review_pk)
 
 

@@ -2,13 +2,12 @@ from django import forms
 from .models import Comment, Review
 
 
-CHOICES = [("Good"),("So SO"),("Bad")]
 
 class ReviewForm(forms.ModelForm):
-    category = forms.ChoiceField(choices=CHOICES)
+    
     class Meta:
         model = Review
-        fields = ['title','content','category',]
+        fields = ['title','content',]
 
 
 
