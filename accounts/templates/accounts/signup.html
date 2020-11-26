@@ -36,14 +36,14 @@
                     <div class="row justify-content-center ml-0 mr-0">
                     {% for movie in trending_items1 %}
                       <div class="col-2">
-                          <img src="https://image.tmdb.org/t/p/original/{{ movie.poster_path }}" class="d-block w-75" alt="{{ similar_movie.title }}">
+                          <a href="{% url 'movies:movie_detail' movie.id %}"><img src="https://image.tmdb.org/t/p/original/{{ movie.poster_path }}" class="d-block w-75" alt="{{ similar_movie.title }}"></a>
                         {% comment %} <h5 style="black"><strong>{{movie.title}}</strong></h5> {% endcomment %}
                       </div>
                     {% endfor %}
                     
                     {% for movie in trending_items2 %}
                       <div class="col-2">
-                          <img src="https://image.tmdb.org/t/p/original/{{ movie.poster_path }}" class="d-block w-75" alt="{{ similar_movie.title }}">
+                          <a href="{% url 'movies:movie_detail' movie.id %}"><img src="https://image.tmdb.org/t/p/original/{{ movie.poster_path }}" class="d-block w-75" alt="{{ similar_movie.title }}"></a>
                         {% comment %} <h5 style="black"><strong>{{movie.title}}</strong></h5> {% endcomment %}
                       </div>
                     {% endfor %}

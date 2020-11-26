@@ -78,7 +78,7 @@
             {% endfor %}
             </div><!-- End blog author bio -->
             </article><!-- End blog entry -->
-            <h3><strong>유사한영화추천</strong></h3>
+            <h3><strong>비슷한 영화를 원하시나요?</strong></h3>
             {% comment %} 유사한 영화 {% endcomment %}
       
             <div class="row mt-4">
@@ -93,6 +93,8 @@
                   </div>
                 </div>
               </div>
+              {% empty %}
+              <h4>Sorry, no Similar Movies :(</h4>
             {% endfor %}
           </div>
 
@@ -110,6 +112,8 @@
                     <h4><p>{{actor.name}}</p></h4>
                     {% comment %} <time datetime="2020-01-01">Jan 1, 2020</time> {% endcomment %}
                   </div>
+                {% empty %}
+                <h4>Sorry, no Credits Info :(</h4>
               {% endfor %}
 
                   {% comment %} <div class="post-item clearfix">

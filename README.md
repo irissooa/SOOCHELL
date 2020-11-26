@@ -2,6 +2,201 @@
 
 [toc]
 
+## 기본틀
+
+### 주제 : 들어오면 무조건 3개는 가져간다
+
+### 추천 -> 리뷰(정보) -> 커뮤니티
+
+#### 1. 추천
+
+- 날씨
+- 오늘 가장많이 클릭한 영화
+- 사이코패스가 좋아하는 영화
+- 내가 좋아하는 평론가들이 추천한 영화
+- 내가 좋아하는 장르
+- mbti별 추천 
+- 나랑 닮은 유명인이 나오는 영화 추천
+
+
+
+#### 2. 리뷰(정보)
+
+- 사이트처럼 해당 영화의 평론가들의 리뷰들 사이트로 이동하게 만듦
+- 그 페이지에 간단한 예고편과 배우들 사진 과 간단한 정보정도
+- 트레일러 등
+
+
+
+#### 3. 커뮤니티
+
+- 사람들끼리 영화에 관한 대화를 하고
+- 서로 추천도 함(믿음이..ㅎ)
+
+
+
+
+
+## 스토리보드
+
+### S1.
+
+이런sthttps://tinder.com/?lang=ko
+
+![image-20201119101605941](README.assets/image-20201119101605941.png)
+
+오른쪽으로 스와이프 => (무조건 건져 st)
+
+계정 만들기 => Signup
+
+메뉴(드롭박스) => 커뮤니티, 추천, 정보
+
+
+
+### S2.Signup
+
+![image-20201119102921159](README.assets/image-20201119102921159.png)
+
+이름, id. pw, email 
+
+
+
+### S3. continue을 누르면 유저 취향 정보 파악 
+
+ S3-1좋아하는 장르 - 여러개중에 고르게 함(3개 이상 골라야 넘어감)
+
+S3-2좋아하는 영화 - 100개 이미지 중에 고르게 함(3개 이상 골라야 넘어감)
+
+S3-3좋아하는 배우 - 한국 탑 30, 할리우드 탑 30 고르게 함 (3개 이상 골라야 넘어감)
+
+S3-4. **내가 좋아하는 영화를 평점 높게 준 평론가들이 추천하는 영화를 추천함**
+
+
+
+### S4. 영화 정보(S3-4에서 추천된 영화 3개의 이미지가 뜸)
+
+그 중에 하나를 클릭하면 영화 정보 페이지로 넘어갈 수 있음
+
+![image-20201119103849671](README.assets/image-20201119103849671.png)
+
+영화제목, 개봉연도, 감독, 배우, 시놉시스, 예고편
+
+평론가 리뷰 10개(링크로 연결) + 만약 된다면 언어 번역
+
+
+
+
+
+_________________
+
+
+
+## 0. 기본기능
+
+| 기능                | url                                | method | req                                                          | res                                          |
+| ------------------- | ---------------------------------- | ------ | :----------------------------------------------------------- | -------------------------------------------- |
+| Signup              | /acccounts/signup/                 | POST   | {username,passwordl}                                         | {username} signup이 잘되면 username을 return |
+| Login               |                                    |        |                                                              |                                              |
+| Logout              |                                    |        |                                                              |                                              |
+| review 조회(인덱스) | /reviews/                          | GET    |                                                              | [{id, category, content, username, date }]   |
+| review detail       | /reviews/:id/                      | GET    | [{id, category, content, username, date }]                   | [{id, category, content, username, date }]   |
+| review 추가         | /reviews/create/                   | POST   | {category, content}<br />POST방식으로 들어온 데이터를 백에다가 저장해달라고 요청, 그리고 요청이 이루어지면, 응답으로 우리가 원하는 데이터를 백에서 받아옴(시리얼라이저로 걸러서 줌) | {id, category, content, username, date }     |
+| review 삭제         | /reviews/:id/delete/               | DELETE |                                                              |                                              |
+| review 수정         | /reviews/:id/update/               | PUT    | {id,category,content}                                        | 수정된 {id, category,content}                |
+| comment 추가        | /reviews/:id/comments/             | POST   | {content,}                                                   | {comment_id,review_id, content}              |
+| comment 삭제        | /reviews/:id/comments/:comment_id/ | DELETE |                                                              |                                              |
+| Like                | /reviews/:id/like/                 | POST   | {username,id}                                                | {모름 username???}                           |
+| follow(된다면)      |                                    |        |                                                              |                                              |
+| movie 조회          | /moives/                           | GET    | json,프로젝트때 카드                                         |                                              |
+| movie 상세          | /movies/:id/                       | GET    |                                                              |                                              |
+|                     |                                    |        |                                                              |                                              |
+|                     |                                    |        |                                                              |                                              |
+|                     |                                    |        |                                                              |                                              |
+|                     |                                    |        |                                                              |                                              |
+|                     |                                    |        |                                                              |                                              |
+|                     |                                    |        |                                                              |                                              |
+|                     |                                    |        |                                                              |                                              |
+
+
+
+
+
+## 1.커뮤니티
+
+메인 페이지
+
+![image-20201119104313198](README.assets/image-20201119104313198.png)
+
+
+
+
+
+상세 페이지
+
+> 좋아요
+
+![image-20201119104423359](README.assets/image-20201119104423359.png)
+
+
+
+
+
+
+
+댓글 
+
+![image-20201119104530788](README.assets/image-20201119104530788.png)
+
+
+
+글쓰기(create)
+
+![image-20201119105051489](README.assets/image-20201119105051489.png)
+
+
+
+
+
+## 2. 영화 정보
+
+영화 정보 카테고르 누르즈마자 들어가자마자 보이는 메인 페이지
+
+![image-20201119105136674](README.assets/image-20201119105136674.png)
+
+
+
+그 중 하나 누르면 상세페이지로 이동
+
+![image-20201119103849671](README.assets/image-20201119103849671.png)
+
+
+
+
+
+
+
+## 3. 영화 추천
+
+![image-20201119105741698](README.assets/image-20201119105741698.png)
+
+카드타입으로 추천 카테고리가 메인페이지
+
+굿플레이스(내가 좋아하는 평론가들이 추천한 영화) -열림과 동시에 추천 영화들이 밑으로 나열되어 있음
+
+다른 카드 카테고리들을 누르면 추천 영화 뜸
+
+- 날씨
+- 오늘 가장많이 클릭한 영화
+- 사이코패스가 좋아하는 영화
+- 내가 좋아하는 평론가들이 추천한 영화
+- 내가 좋아하는 장르
+- mbti별 추천 
+- 나랑 닮은 유명인이 나오는 영화 추천
+
+
+
+
+
 ## front-end 오류 및 해결
 
 ### 문제1. router 
