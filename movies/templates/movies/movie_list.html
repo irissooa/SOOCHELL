@@ -28,7 +28,7 @@
         <span id = 'like-count-{{search_movie.id}}'>{{ search_movie.liker.all|length }} </span>Likes<br>
         </li>
         <div class="text-right">
-          <a href="{% url 'movies:movie_detail' search_movie.id %}" class="btn btn-dark">Movie's Detail</a>
+          <a href="{% url 'movies:movie_detail' search_movie.movie_id %}" class="btn btn-dark">Movie's Detail</a>
         </div>
       </div>
     </div>

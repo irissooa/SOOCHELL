@@ -63,20 +63,22 @@
                 </blockquote>
 
               </div>
-            
-            </article><!-- End blog entry -->
             <!-- 리뷰 링크 -->
-            {% for review in movie_reviews %}
+            <h3><strong>Review</strong></h3>
             <div class="blog-author clearfix">
+            {% for review in movie_reviews %}
+ 
               {% comment %} <img src="assets/img/blog-author.jpg" class="rounded-circle float-left" alt=""> {% endcomment %}
               <h4>{{review.author}}</h4>
               <p>
                 {{review.content}}
               </p>
-            </div><!-- End blog author bio -->
             {% endfor %}
+            </div><!-- End blog author bio -->
+            </article><!-- End blog entry -->
             <h3><strong>유사한영화추천</strong></h3>
             {% comment %} 유사한 영화 {% endcomment %}
+      
             <div class="row mt-4">
             {% for similar_movie in similar_movies %}
               <div class="card col-3">
@@ -122,6 +124,7 @@
       </div>
     </section><!-- End Blog Section -->
  
+            
 
 {% endblock%}
 

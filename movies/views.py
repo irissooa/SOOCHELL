@@ -120,22 +120,24 @@ def movie_detail(request, movie_pk):
         movie_credit = res_2.json()['cast']
 
         #리뷰
-        URL_3 = f'ttps://api.themoviedb.org/3/movie/{movie_id}/reviews'
-        res_3 = requests.get(URL_3,params=params)
-
-        review_itmes = res_3.json['results']
-
-        
+        URL_3 = f'https://api.themoviedb.org/3/movie/{movie_id}/reviews'
+        params_2 = {'api_key':API_KEY}
+        res_3 = requests.get(URL_3,params=params_2)
+ 
+        review_items = res_3.json()['results']
         similar_movies = []
         actors = [] 
         movie_reviews = []
-        if len(similar_items)>1 and len(movie_credit)> 1 and len(review_itmes):
-            result = min(len(similar_items),len(movie_credit),len(review_items))
+        
+        if len(similar_items)>1 and len(movie_credit)> 1:
+            result = min(len(similar_items),len(movie_credit))
             for i in range(result):
                 similar_movies.append(similar_items[i])
                 actors.append(movie_credit[i])
+        
+        if len(review_items)>1:
+            for i in range(len(review_items)):
                 movie_reviews.append(review_items[i])
-
         context = {
             'movie':movie,
             'similar_movies':similar_movies,
