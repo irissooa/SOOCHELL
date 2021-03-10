@@ -2,7 +2,53 @@
 
 [toc]
 
-## 기본틀
+## 프로젝트 결과
+
+- 메인페이지
+
+![MAIN](README.assets/1.png)
+
+- 메인페이지 옆 오늘의 영화 보여줌
+
+![2](README.assets/2.png)
+
+- 메인페이지의 `SIGN UP`버튼을 누르면 아래 SIGNUP 페이지로 슬라이드해서 내려감
+
+![3](README.assets/3.png)
+
+- 회원가입을 한 뒤, 선호하는 컨텐츠를 선택(추천 알고리즘에 사용됨)
+
+![4](README.assets/4.png)
+
+- 선택을 한 장르별 추천을 해줌
+
+![5](README.assets/5.png)
+
+![6](README.assets/6.png)
+
+- VOD의 세부페이지(영화 상세내용, 출연진, 리뷰, 유사영화추천을 보여줌)
+
+![7](README.assets/7.png)
+
+![8](README.assets/8.png)
+
+![9](README.assets/9.png)
+
+- 검색기능(ex. `해리` 검색결과)
+
+![10](README.assets/10.png)
+
+- Community기능
+
+![11](README.assets/11.png)
+
+- Community 상세 페이지, 댓글도 달수있음
+
+![12](README.assets/12.png)
+
+![13](README.assets/13.png)
+
+## (기획)기본틀
 
 ### 주제 : 들어오면 무조건 3개는 가져간다
 
